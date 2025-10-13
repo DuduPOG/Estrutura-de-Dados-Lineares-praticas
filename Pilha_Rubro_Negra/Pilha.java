@@ -16,22 +16,26 @@ public interface Pilha {
 
     public int size();
 
+    public int size_vermelho();
+
+    public int size_preto();
+
     public boolean isEmpty();
 
-    public boolean isEmpty_v();
+    public boolean isEmpty_vermelho();
 
-    public boolean isEmpty_p();
+    public boolean isEmpty_preto();
 
-    public Object top_v() throws PilhaVaziaExcecao;
+    public Object top_vermelho() throws PilhaVaziaExcecao;
 
-    public Object top_p() throws PilhaVaziaExcecao;
+    public Object top_preto() throws PilhaVaziaExcecao;
 
-    public void push_v(Object o);
+    public void push_vermelho(Object o);
 
-    public void push_p(Object o);
+    public void push_preto(Object o);
 
-    public Object pop_v() throws PilhaVaziaExcecao;
+    public Object pop_vermelho() throws PilhaVaziaExcecao;
 
-    public Object pop_p() throws PilhaVaziaExcecao;
+    public Object pop_preto() throws PilhaVaziaExcecao;
 
 }
