@@ -1,74 +1,55 @@
 public class Vetor_Arranjo {
     public static class VetorArray implements Vetor_Interface {
-        private int tamanho;
-        private int capacidade;
-        private int primeiro;
-        private int finalFila;
+        private int size;
+        private int capacity;
+        private int i;
+        private int f;
         private Object[] a;
 
-        public VetorArray(int capacidade) {
-            this.tamanho = 0;
-            this.capacidade = capacidade;
-            this.primeiro = 0;
-            this.finalFila = this.primeiro + 1;
-            this.a = new Object[this.capacidade];
+        public VetorArray(int capacity) {
+            this.size = 0;
+            this.capacity = capacity;
+            this.i = -1;
+            this.f = this.i + 1;
+            this.a = new Object[this.capacity];
         }
 
         @Override
-        public int tamanho(){
-            return this.tamanho;
+        public int size(){
+            return this.size;
+        }
+    
+        @Override
+        public boolean isEmpty(){
+            return this.size == 0;
         }
         
         @Override
-        public boolean estaVazia(){
-            return this.primeiro == this.finalFila;
-        }
-
-        @Override
-        public boolean estaCheia(){
-            return this.primeiro + 1 == this.finalFila;
-        }
-
-        @Override
-        public Object inicio() throws EFilaVazia {
-            if (estaVazia()) {
-                throw new EFilaVazia("A fila está vazia");
+        public int elemAtRank(int index) throws EVetorIndice, EVetorVazio{
+            if(isEmpty()){
+                throw new EVetorVazio("Não é possível mostrar um elemento de um vetor vazio");
             }
-            return this.a[this.primeiro];
+            if (index >= this.f){
+                throw new EVetorIndice("Índice inválido");
+            }
+            return this.a[index];
+        }
+        
+        @Override
+        public void removeAtRank(Object o) throws EVetorIndice, EVetorVazio{
+
+        }
+        
+        @Override
+        public void insertAtRank(Object o) throws EVetorIndice, EVetorVazio{
+
         }
 
         @Override
-        public void enfileirar(Object o){
-            if (estaCheia()){
-                int antiga_capacidade = this.capacidade;
-                this.capacidade *= 2;
-                Object[] b = new Object[this.capacidade];
-                for (int i = 0; i < this.tamanho; ++i){
-                    int ii = (this.primeiro + i) % antiga_capacidade;
-                    b[i] = this.a[ii];
-                }
-                this.a = b;
-                this.primeiro = 0;
-                this.a[this.finalFila] = o;
-                this.finalFila = ++this.tamanho;
-            } else {
-            this.a[this.finalFila] = o;
-            ++this.tamanho;
-            this.finalFila = (this.finalFila + 1) % this.capacidade;
-            }
-        }
+        public void replaceAtRank(Object o, Object p) throws EVetorIndice, EVetorVazio{
 
-        @Override
-        public Object desenfileirar() throws EFilaVazia {
-            if (estaVazia()){
-                throw new EFilaVazia("A fila está vazia");
-            }
-            Object saindo = this.a[this.primeiro];
-            this.primeiro = (this.primeiro + 1) % this.capacidade;
-            --this.tamanho;
-            return saindo;
         }
-    }
+}
 
     public static void main(String[] args) {			
 		VetorArray pp = new VetorArray(1);
