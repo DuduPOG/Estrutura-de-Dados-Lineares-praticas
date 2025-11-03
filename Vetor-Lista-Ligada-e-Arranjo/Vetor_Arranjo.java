@@ -8,7 +8,7 @@ public class Vetor_Arranjo {
         public VetorArray(int capacity) {
             this.size = 0;
             this.capacity = 8;
-            this.f = this.size;
+            this.f = -1;
             this.a = new Object[this.capacity];
         }
 
@@ -27,7 +27,7 @@ public class Vetor_Arranjo {
             if(isEmpty()){
                 throw new EVetorVazio("Não é possível mostrar um elemento de um vetor vazio");
             }
-            if (index >= this.f){
+            if (index > this.f || index < 0){
                 throw new EVetorIndice("Índice inválido");
             }
             return this.a[index];
@@ -38,7 +38,7 @@ public class Vetor_Arranjo {
             if(isEmpty()){
                 throw new EVetorVazio("Não é possível remover um elemento de um vetor vazio");
             }
-            if (index >= this.f){
+            if (index > this.f || index < 0){
                 throw new EVetorIndice("Índice inválido");
             }
             Object to_remove = this.a[index];
@@ -46,11 +46,15 @@ public class Vetor_Arranjo {
                 this.a[i] = this.a[i + 1];
             }
             this.size--;
+            this.f--;
             return to_remove;
         }
         
         @Override
-        public void insertAtRank(int index, Object o) throws EVetorIndice {
+        public void insertAtRank(int index, Object o) throws EVetorIndice{
+            if (index > this.f || index < 0){
+                throw new EVetorIndice("Índice inválido");
+            }
             if(this.f == this.capacity - 1){
                 this.capacity *= 2;
                 Object[] b = new Object[this.capacity];
@@ -61,6 +65,7 @@ public class Vetor_Arranjo {
                     b[i] = this.a[i - 1];
                 }
                 b[index] = o;
+                this.f++;
                 this.a = b;
                 ++this.size;
             } else{
@@ -68,13 +73,17 @@ public class Vetor_Arranjo {
                 this.a[i] = this.a[i - 1];
             }
             this.a[index] = o;
+            this.f++;
             ++this.size;
             }
         }
 
         @Override
-        public Object replaceAtRank(int index, Object o) throws EVetorIndice{
-            if (index >= this.f){
+        public Object replaceAtRank(int index, Object o) throws EVetorIndice, EVetorVazio{
+            if (isEmpty()){
+                throw new EVetorVazio("Não é possível substituir elemento de um vetor vazio");
+            }
+            if (index > this.f || index < 0){
                 throw new EVetorIndice("Índice inválido");
             }
             Object old_element = this.a[index];

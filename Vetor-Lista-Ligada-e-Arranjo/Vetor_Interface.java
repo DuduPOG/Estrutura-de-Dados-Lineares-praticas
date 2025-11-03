@@ -10,5 +10,5 @@ public interface Vetor_Interface {
     
     public void insertAtRank(int index, Object o) throws EVetorIndice;
 
-    public Object replaceAtRank(int index, Object o) throws EVetorIndice;
+    public Object replaceAtRank(int index, Object o) throws EVetorIndice, EVetorVazio;
 }
