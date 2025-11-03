@@ -3,7 +3,6 @@ public class Vetor_Lista {
         private int size;
         private No head;
         private No tail;
-        private int f;
         private class No{
             No prev;
             Object value;
@@ -17,7 +16,6 @@ public class Vetor_Lista {
         }
         public VetorListaLigada() {
             this.size = 0;
-            this.f = -1;
             this.head = null;
             this.tail = null;
         }
@@ -38,7 +36,7 @@ public class Vetor_Lista {
             if(isEmpty()){
                 throw new EVetorVazio("Não é possível mostrar um elemento de um vetor vazio");
             }
-            if (index > this.f || index < 0){
+            if (index < 0){
                 throw new EVetorIndice("Índice inválido");
             }
             int current_index = 0;
@@ -55,7 +53,7 @@ public class Vetor_Lista {
             if(isEmpty()){
                 throw new EVetorVazio("Não é possível remover um elemento de um vetor vazio");
             }
-            if (index >= this.f){
+            if (index < 0){
                 throw new EVetorIndice("Índice inválido");
             }
             Object to_remove = elemAtRank(index);
@@ -72,22 +70,38 @@ public class Vetor_Lista {
         
         @Override
         public void insertAtRank(int index, Object o) throws EVetorIndice {
-            if(index > this.f || index < 0){
+            if(index < 0){
                 throw new EVetorIndice("Índice inválido");
             }
-            
-            }
-        }
+            if(isEmpty()){
+                this.head.value = o;
+                this.size++;
+            } else {
+                No to_add = new No();
+                to_add.value = o;
+                No current = this.head;
+                for(int i = 0; i < index; ++i){
+                    current = current.next;
+                }
+                to_add.next = current.next;
+                to_add.prev = current.prev;
+                current.next.prev = to_add;
+                current.prev.next = to_add;
+                this.size++;
 
+            }
+            
+        }
+        
         @Override
-        public Object replaceAtRank(int index, Object o) throws EVetorIndice, EVetorVazio{
+        public Object replaceAtRank(int index, Object o) throws EVetorIndice, EVetorVazio {
             if(isEmpty()){
                 throw new EVetorVazio("Não é possível substituir elemento de um vetor vazio");
             }
-            if (index > this.f || index < 0){
+            if (index < 0){
                 throw new EVetorIndice("Índice inválido");
             }
-            Object old_element = find(index);
+            Object old_element = elemAtRank(index);
             No current = this.head;
             while(current.value != old_element){
                 current = current.next;
