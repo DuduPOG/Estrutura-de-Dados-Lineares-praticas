@@ -2,15 +2,13 @@ public class Vetor_Arranjo {
     public static class VetorArray implements Vetor_Interface {
         private int size;
         private int capacity;
-        private int i;
         private int f;
         private Object[] a;
 
         public VetorArray(int capacity) {
             this.size = 0;
-            this.capacity = capacity;
-            this.i = -1;
-            this.f = this.i + 1;
+            this.capacity = 8;
+            this.f = this.size;
             this.a = new Object[this.capacity];
         }
 
@@ -25,7 +23,7 @@ public class Vetor_Arranjo {
         }
         
         @Override
-        public int elemAtRank(int index) throws EVetorIndice, EVetorVazio{
+        public Object elemAtRank(int index) throws EVetorIndice, EVetorVazio{
             if(isEmpty()){
                 throw new EVetorVazio("Não é possível mostrar um elemento de um vetor vazio");
             }
@@ -36,18 +34,52 @@ public class Vetor_Arranjo {
         }
         
         @Override
-        public void removeAtRank(Object o) throws EVetorIndice, EVetorVazio{
-
+        public Object removeAtRank(int index) throws EVetorIndice, EVetorVazio{
+            if(isEmpty()){
+                throw new EVetorVazio("Não é possível remover um elemento de um vetor vazio");
+            }
+            if (index >= this.f){
+                throw new EVetorIndice("Índice inválido");
+            }
+            Object to_remove = this.a[index];
+            for(int i = index; i < this.f - 1; ++i){
+                this.a[i] = this.a[i + 1];
+            }
+            this.size--;
+            return to_remove;
         }
         
         @Override
-        public void insertAtRank(Object o) throws EVetorIndice, EVetorVazio{
-
+        public void insertAtRank(int index, Object o) throws EVetorIndice {
+            if(this.f == this.capacity - 1){
+                this.capacity *= 2;
+                Object[] b = new Object[this.capacity];
+                for(int i = 0; i < index; ++i){
+                    b[i] = this.a[i];
+                }
+                for(int i = index + 1; i < this.f; ++i){
+                    b[i] = this.a[i - 1];
+                }
+                b[index] = o;
+                this.a = b;
+                ++this.size;
+            } else{
+            for(int i = this.f; i > index; --i){
+                this.a[i] = this.a[i - 1];
+            }
+            this.a[index] = o;
+            ++this.size;
+            }
         }
 
         @Override
-        public void replaceAtRank(Object o, Object p) throws EVetorIndice, EVetorVazio{
-
+        public Object replaceAtRank(int index, Object o) throws EVetorIndice{
+            if (index >= this.f){
+                throw new EVetorIndice("Índice inválido");
+            }
+            Object old_element = this.a[index];
+            this.a[index] = o;
+            return  old_element;
         }
 }
 

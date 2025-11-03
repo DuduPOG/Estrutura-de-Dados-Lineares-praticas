@@ -4,11 +4,11 @@ public interface Vetor_Interface {
     
     public boolean isEmpty();
     
-    public int elemAtRank(int index) throws EVetorIndice, EVetorVazio;
+    public Object elemAtRank(int index) throws EVetorIndice, EVetorVazio;
     
-    public void removeAtRank(Object o) throws EVetorIndice, EVetorVazio;
+    public Object removeAtRank(int index) throws EVetorIndice, EVetorVazio;
     
-    public void insertAtRank(Object o) throws EVetorIndice, EVetorVazio;
+    public void insertAtRank(int index, Object o) throws EVetorIndice;
 
-    public void replaceAtRank(Object o, Object index) throws EVetorIndice, EVetorVazio;
+    public Object replaceAtRank(int index, Object o) throws EVetorIndice;
 }
