@@ -56,8 +56,22 @@ public class Vetor_Lista {
             if (index < 0 || index >= this.size){
                 throw new EVetorIndice("Índice inválido");
             }
+            if (index == 0){
+                Object to_remove = this.head.value;
+                this.head = this.head.next;
+                this.head.prev = null;
+                this.size--;
+                return to_remove;
+            }
+            if (index == this.size - 1){
+                Object to_remove = this.tail.value;
+                this.tail = this.tail.prev;
+                this.tail.next = null;
+                this.size--;
+                return to_remove;
+            }
             Object to_remove = elemAtRank(index);
-            Object current_index = 0;
+            int current_index = 0;
             No current = this.head;
             while (current.value != to_remove && current_index != index){
                 current = current.next;
@@ -73,12 +87,27 @@ public class Vetor_Lista {
         public void insertAtRank(int index, Object o) throws EVetorIndice {
             if(index < 0 || index >= this.size){
                 throw new EVetorIndice("Índice inválido");
-            }
-            if(isEmpty()){
-                this.head.value = o;
-                this.tail = this.head;
-                this.size++;
             } else {
+                if (index == 0){
+                    No to_add = new No();
+                    to_add.value = o;
+                    to_add.prev = null;
+                    to_add.next = this.head.next;
+                    this.head.next.prev = to_add;
+                    this.head = to_add;
+                    this.size++;
+                    return;
+                }
+                if (index == this.size - 1){
+                    No to_add = new No();
+                    to_add.value = o;
+                    to_add.next = null;
+                    to_add.prev = this.tail.prev;
+                    this.tail.prev.next = to_add;
+                    this.tail = to_add;
+                    this.size++;
+                    return;
+                }
                 No to_add = new No();
                 to_add.value = o;
                 No current = this.head;
@@ -91,7 +120,6 @@ public class Vetor_Lista {
                 current.prev = to_add;
                 this.size++;
             }
-            
         }
         
         @Override
