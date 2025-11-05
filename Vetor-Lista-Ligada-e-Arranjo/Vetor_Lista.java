@@ -57,9 +57,11 @@ public class Vetor_Lista {
                 throw new EVetorIndice("Índice inválido");
             }
             Object to_remove = elemAtRank(index);
+            Object current_index = 0;
             No current = this.head;
-            while (current.value != to_remove){
+            while (current.value != to_remove && current_index != index){
                 current = current.next;
+                current_index++;
             }
             current.prev.next = current.next;
             current.next.prev = current.prev;
