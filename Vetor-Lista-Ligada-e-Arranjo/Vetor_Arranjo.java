@@ -5,7 +5,7 @@ public class Vetor_Arranjo {
         private int f;
         private Object[] a;
 
-        public VetorArray(int capacity) {
+        public VetorArray() {
             this.size = 0;
             this.capacity = 8;
             this.f = -1;
