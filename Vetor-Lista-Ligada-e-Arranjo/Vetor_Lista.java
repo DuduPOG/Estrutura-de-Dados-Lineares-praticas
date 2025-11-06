@@ -36,7 +36,7 @@ public class Vetor_Lista {
             if(isEmpty()){
                 throw new EVetorVazio("Não é possível mostrar um elemento de um vetor vazio");
             }
-            if (index < 0 || index >= this.size){
+            if (index < 0 || index > this.size){
                 throw new EVetorIndice("Índice inválido");
             }
             int current_index = 0;
@@ -53,7 +53,7 @@ public class Vetor_Lista {
             if(isEmpty()){
                 throw new EVetorVazio("Não é possível remover um elemento de um vetor vazio");
             }
-            if (index < 0 || index >= this.size){
+            if (index < 0 || index > this.size){
                 throw new EVetorIndice("Índice inválido");
             }
             if (index == 0){
@@ -73,7 +73,7 @@ public class Vetor_Lista {
             Object to_remove = elemAtRank(index);
             int current_index = 0;
             No current = this.head;
-            while (current.value != to_remove && current_index != index){
+            while (current.value != to_remove || current_index != index){
                 current = current.next;
                 current_index++;
             }
@@ -85,15 +85,15 @@ public class Vetor_Lista {
         
         @Override
         public void insertAtRank(int index, Object o) throws EVetorIndice {
-            if(index < 0 || index >= this.size){
+            if(index < 0 || index > this.size){
                 throw new EVetorIndice("Índice inválido");
             } else {
                 if (index == 0){
                     No to_add = new No();
                     to_add.value = o;
                     to_add.prev = null;
-                    to_add.next = this.head.next;
-                    this.head.next.prev = to_add;
+                    to_add.next = this.head;
+                    this.head.prev = to_add;
                     this.head = to_add;
                     this.size++;
                     return;
@@ -102,8 +102,8 @@ public class Vetor_Lista {
                     No to_add = new No();
                     to_add.value = o;
                     to_add.next = null;
-                    to_add.prev = this.tail.prev;
-                    this.tail.prev.next = to_add;
+                    to_add.prev = this.tail;
+                    this.tail.next = to_add;
                     this.tail = to_add;
                     this.size++;
                     return;
@@ -127,7 +127,7 @@ public class Vetor_Lista {
             if(isEmpty()){
                 throw new EVetorVazio("Não é possível substituir elemento de um vetor vazio");
             }
-            if (index < 0 || index >= this.size){
+            if (index < 0 || index > this.size){
                 throw new EVetorIndice("Índice inválido");
             }
             Object old_element = elemAtRank(index);
@@ -141,19 +141,6 @@ public class Vetor_Lista {
     }
 
     public static void main(String[] args) {			
-		VetorListaLigada pp = new VetorListaLigada(1);
-		System.out.println("inserindo");
-		for(int f = 0; f < 16; f++){
-		  System.out.println(f);		  
-		  pp.push_v(f);
-          pp.push_p(f);
-		}
-		System.out.println("retirando");
-		for(int f = 0; f < 16; f++){
-			  System.out.print(f);
-			  System.out.println(" - " + pp.pop_v());
-              System.err.print(f);
-              System.out.println(" . " + pp.pop_p());
-		}
+		
 	}
 }

@@ -41,6 +41,14 @@ public class Vetor_Arranjo {
             if (index > this.f || index < 0){
                 throw new EVetorIndice("Índice inválido");
             }
+            if (this.size * 1.0 / this.capacity * 1.0 <= 1.0 / 3.0){
+                this.capacity/=2;
+                Object[] b = new Object[this.capacity];
+                for (int i = 0; i < this.size; ++i){
+                    b[i] = this.a[i];
+                }
+                this.a = b;
+            }
             Object to_remove = this.a[index];
             for(int i = index; i < this.f - 1; ++i){
                 this.a[i] = this.a[i + 1];
@@ -93,19 +101,5 @@ public class Vetor_Arranjo {
 }
 
     public static void main(String[] args) {			
-		VetorArray pp = new VetorArray(1);
-		System.out.println("inserindo");
-		for(int f = 0; f < 16; f++){
-		  System.out.println(f);		  
-		  pp.push_v(f);
-          pp.push_p(f);
-		}
-		System.out.println("retirando");
-		for(int f = 0; f < 16; f++){
-			  System.out.print(f);
-			  System.out.println(" - " + pp.pop_v());
-              System.err.print(f);
-              System.out.println(" . " + pp.pop_p());
-		}
 	}
 }
