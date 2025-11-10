@@ -28,6 +28,6 @@ public interface Lista_Interface {
 
     public void insertAfter(Object n, Object o) throws ElementoInexistente;
 
-    public Object replaceElement(int index, Object o) throws EListaIndice, EListaVazia;
+    public Object replaceElement(Object n, Object o) throws EListaIndice, EListaVazia;
 
 }

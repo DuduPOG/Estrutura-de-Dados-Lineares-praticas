@@ -19,8 +19,8 @@ public class Lista_Lista {
 
         public ListaListaLigada(){
             this.size = 0;
-            this.head = null;
-            this.tail = null;
+            this.head = new No();
+            this.tail = new No();
         }
 
         @Override
@@ -121,19 +121,19 @@ public class Lista_Lista {
         }
 
         @Override
-        public Object replaceElement(int n, Object o) throws EListaIndice, EListaVazia{
+        public Object replaceElement(Object n, Object o) throws ElementoInexistente, EListaVazia{
             if (isEmpty()){
                 throw new EListaVazia("Não é possível substituir elementos de uma lista vazia");
             }
             if (n < 0 || n >= this.size){
-                throw new EListaIndice("Índice Ínvalido");
+                throw new ElementoInexistente("Índice Ínvalido");
             }
-            if (n == 0){
+            if (o == this.head.next.value){
                 Object replaced = this.head.next.value;
                 this.head.next.value = o;
                 return replaced;
             }
-            if (n == this.size - 1){
+            if (o == this.tail.prev.value){
                 Object replaced = this.tail.prev.value;
                 this.tail.prev.value = o;
                 return replaced;
