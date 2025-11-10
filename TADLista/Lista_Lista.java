@@ -69,8 +69,25 @@ public class Lista_Lista {
         }
         
         @Override
-        public Object remove(Object n) throws EListaVazia{
-
+        public Object remove(Object n) throws EListaVazia, ElementoInexistente{
+            if (isEmpty()){
+                throw new EListaVazia("Não é possível remover um elemento de uma lista vazia");
+            }
+            No current = this.head.next;
+            while (current != this.tail){
+                if (current.value == n){
+                    break;
+                }
+                current = current.next;
+            }
+            if (current == this.tail){
+                throw new ElementoInexistente("Não é possível remover um elemento que não existe");
+            }
+            Object to_remove = current.value;
+            current.prev.next = current.next;
+            current.next.prev = current.prev;
+            this.size--;
+            return to_remove;
         }
         
         @Override
@@ -105,7 +122,38 @@ public class Lista_Lista {
 
         @Override
         public Object replaceElement(int n, Object o) throws EListaIndice, EListaVazia{
-
+            if (isEmpty()){
+                throw new EListaVazia("Não é possível substituir elementos de uma lista vazia");
+            }
+            if (n < 0 || n >= this.size){
+                throw new EListaIndice("Índice Ínvalido");
+            }
+            if (n == 0){
+                Object replaced = this.head.next.value;
+                this.head.next.value = o;
+                return replaced;
+            }
+            if (n == this.size - 1){
+                Object replaced = this.tail.prev.value;
+                this.tail.prev.value = o;
+                return replaced;
+            }
+            if (n < this.size / 2){
+                No current = this.head.next;
+                for (int i = 1; i < this.size; ++i){
+                    current = current.next;
+                }
+                Object replaced = current.value;
+                current.value = o;
+                return replaced;
+            }
+            No current = this.head.next;
+                for (int i = this.size - 1; i > n; ++i){
+                    current = current.prev;
+                }
+                Object replaced = current.value;
+                current.value = o;
+                return replaced;
         }
     }
 }
