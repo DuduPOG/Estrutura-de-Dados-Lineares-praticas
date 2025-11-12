@@ -21,6 +21,8 @@ public class Lista_Lista {
             this.size = 0;
             this.head = new No();
             this.tail = new No();
+            this.head.next = this.tail;
+            this.tail.prev = this.head;
         }
 
         @Override
@@ -30,7 +32,7 @@ public class Lista_Lista {
         
         @Override
         public boolean isEmpty(){
-            return this.head == null;
+            return this.size == 0;
         }
 
         @Override
@@ -54,18 +56,152 @@ public class Lista_Lista {
         }
 
         @Override
-        public Object before(Object p) throws EListaIndice{
-
+        public Object before(Object p) throws EListaIndice, ElementoInexistente, EListaVazia{
+            if (p == this.head.next.value){
+                throw new EListaIndice("Não existe um elemento antes do primeiro elemento");
+            }
+            if (this.size < 2){
+                throw new ElementoInexistente("Este é o único elemento da lista");
+            }
+            if (isEmpty()){
+                throw new EListaVazia("Lista vazia");
+            }
+            No current = this.head.next.next;
+            while (current != this.tail){
+                if (current.value == p){
+                    return current.prev.value;
+                }
+                current = current.next;
+            }
+            throw new ElementoInexistente("Não existe um elemento 'p'");
         }
 
         @Override
-        public Object after(Object p) throws EListaIndice{
+        public Object after(Object p) throws EListaIndice, ElementoInexistente, EListaVazia{
+            if (p == this.tail.prev.value){
+                throw new EListaIndice("Não existe um elemento depois do último elemento");
+            }
+            if (this.size < 2){
+                throw new ElementoInexistente("Este é o único elemento da lista");
+            }
+            if (isEmpty()){
+                throw new EListaVazia("Lista vazia");
+            }
+            No current = this.head.next.next;
+            while (current != this.tail.prev){
+                if (current.value == p){
+                    return current.next.value;
+                }
+                current = current.next;
+            }
+            throw new ElementoInexistente("Não existe um elemento 'p'");
+        }
 
+        @Override
+        public void insertBefore(Object n, Object o) throws ElementoInexistente, EListaVazia{
+            if(isEmpty()){
+                throw new EListaVazia("Lista vazia");
+            }
+            if (n == this.head.next.value){
+                No toAdd = new No();
+                toAdd.prev = this.head;
+                toAdd.value = o;
+                toAdd.next = this.head.next;
+                this.head.next.prev = toAdd;
+                this.head.next = toAdd;
+                this.size++;
+                return;
+            }
+            if (n == this.tail.prev.value){
+                No toAdd = new No();
+                toAdd.prev = this.head.prev.prev;
+                toAdd.value = o;
+                toAdd.next = this.tail.prev;
+                this.tail.prev.prev.next = toAdd;
+                this.tail.prev.prev = toAdd;
+                this.size++;
+                return;
+            }
+            No current = this.head.next.next;
+            while (current != this.tail){
+                if (current.value == n){
+                    No toAdd = new No();
+                    toAdd.prev = current.prev;
+                    toAdd.value = o;
+                    toAdd.next = current.next;
+                    current.prev.next = toAdd;
+                    current.prev = toAdd;
+                    this.size++;
+                    return;
+                }
+            }
+            throw new ElementoInexistente("O elemento 'n' não está presente na lista");
+        }
+
+        @Override
+        public void insertAfter(Object n, Object o) throws ElementoInexistente, EListaVazia{
+            if(isEmpty()){
+                throw new EListaVazia("Lista vazia");
+            }
+            if (n == this.head.next.value){
+                No toAdd = new No();
+                toAdd.prev = this.head.next;
+                toAdd.value = o;
+                toAdd.next = this.head.next.next;
+                this.head.next.next.prev = toAdd;
+                this.head.next.next = toAdd;
+                this.size++;
+                return;
+            }
+            if (n == this.tail.prev.value){
+                No toAdd = new No();
+                toAdd.prev = this.head.prev;
+                toAdd.value = o;
+                toAdd.next = this.tail;
+                this.tail.prev.next = toAdd;
+                this.tail.prev = toAdd;
+                this.size++;
+                return;
+            }
+            No current = this.head.next.next;
+            while (current != this.tail){
+                if (current.value == n){
+                    No toAdd = new No();
+                    toAdd.prev = current;
+                    toAdd.value = o;
+                    toAdd.next = current.next;
+                    current.next.prev = toAdd;
+                    current.next = toAdd;
+                    this.size++;
+                    return;
+                }
+            }
+            throw new ElementoInexistente("O elemento 'n' não está presente na lista");
         }
         
         @Override
-        public Object swapElements(Object n, Object q) throws EVetorIndice, EVetorVazio{
-
+        public void swapElements(Object n, Object q) throws ElementoInexistente, EListaVazia{
+            if (this.size < 2){
+                throw new EListaVazia("Não é possível trocar elementos de uma lista com menos de 2 elementos ou vazia");
+            }
+            No N = null;
+            No Q = null;
+            No current = this.head.next;
+            while (current != this.tail){
+                if (current.value == n){
+                    N = current;
+                }
+                if (current.value == q){
+                    Q = current;
+                }
+                current = current.next;
+            }
+            if (N == null || Q == null){
+                throw new ElementoInexistente("Um dos elementos não existe");
+            }
+            Object aux = N.value;
+            N.value = Q.value;
+            Q.value = aux;
         }
         
         @Override
@@ -93,14 +229,10 @@ public class Lista_Lista {
         @Override
         public void insertFirst(Object o){
             No to_add = new No();
-            to_add.value = 0;
+            to_add.value = o;
             to_add.prev = this.head;
             to_add.next = this.head.next;
-            if (this.head.next == null){
-                this.tail.prev = to_add;
-            } else{
-                this.head.next.prev = to_add;
-            }
+            this.head.next.prev = to_add;
             this.head.next = to_add;
             this.size++;           
         }
@@ -108,14 +240,10 @@ public class Lista_Lista {
         @Override
         public void insertLast(Object o){
             No to_add = new No();
-            to_add.value = 0;
+            to_add.value = o;
             to_add.prev = this.tail.prev;
             to_add.next = this.tail;
-            if (this.tail.prev == null){
-                this.head.next = to_add;
-            } else{
-                this.tail.prev.next = to_add;
-            }
+            this.tail.prev.next = to_add;
             this.tail.prev = to_add;
             this.size++;   
         }
@@ -125,35 +253,29 @@ public class Lista_Lista {
             if (isEmpty()){
                 throw new EListaVazia("Não é possível substituir elementos de uma lista vazia");
             }
-            if (n < 0 || n >= this.size){
-                throw new ElementoInexistente("Índice Ínvalido");
-            }
-            if (o == this.head.next.value){
+            if (n == this.head.next.value){
                 Object replaced = this.head.next.value;
                 this.head.next.value = o;
                 return replaced;
             }
-            if (o == this.tail.prev.value){
+            if (n == this.tail.prev.value){
                 Object replaced = this.tail.prev.value;
                 this.tail.prev.value = o;
                 return replaced;
             }
-            if (n < this.size / 2){
-                No current = this.head.next;
-                for (int i = 1; i < this.size; ++i){
-                    current = current.next;
-                }
-                Object replaced = current.value;
-                current.value = o;
-                return replaced;
-            }
             No current = this.head.next;
-                for (int i = this.size - 1; i > n; ++i){
-                    current = current.prev;
+            for (int i = 1; i < this.size - 2; ++i){
+                if (current.value == n){
+                    break;
                 }
-                Object replaced = current.value;
-                current.value = o;
-                return replaced;
+                current = current.next;
+            }
+            if (current.value != n){
+                throw new ElementoInexistente("Não é possível substituir um valor inexistente");
+            }
+            Object replaced = current.value;
+            current.value = o;
+            return replaced;
         }
     }
 }

@@ -1,7 +1,7 @@
 public class TesteListaArray extends Lista_Arranjo{
     public static void main(String[] args) {
         try {
-            VetorArray arrayTeste = new VetorArray();
+            ListaArray arrayTeste = new ListaArray();
             System.out.println("Capacidade inicial: " + arrayTeste.get_capacity());
             System.out.println("Está vazio? " + arrayTeste.isEmpty());
 

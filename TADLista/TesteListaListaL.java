@@ -1,7 +1,7 @@
 public class TesteListaListaL extends Lista_Lista{
     public static void main(String[] args) {			
 		try {
-            VetorListaLigada listaTeste = new VetorListaLigada();
+            ListaListaLigada listaTeste = new ListaListaLigada();
             System.out.println("Tamanho inicial: " + listaTeste.size());
             System.out.println("Está vazio? " + listaTeste.isEmpty());
 

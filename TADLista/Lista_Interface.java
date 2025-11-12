@@ -12,11 +12,11 @@ public interface Lista_Interface {
 
     public Object last() throws EListaVazia;
 
-    public Object before(Object p) throws EListaIndice, ElementoInexistente;
+    public Object before(Object p) throws EListaIndice, ElementoInexistente, EListaVazia;
 
-    public Object after(Object p) throws EListaIndice, ElementoInexistente;
+    public Object after(Object p) throws EListaIndice, ElementoInexistente, EListaVazia;
     
-    public Object swapElements(Object n, Object q) throws ElementoInexistente, EListaVazia;
+    public void swapElements(Object n, Object q) throws ElementoInexistente, EListaVazia;
     
     public Object remove(Object n) throws EListaVazia, ElementoInexistente;
     
@@ -24,9 +24,9 @@ public interface Lista_Interface {
 
     public void insertLast(Object o);
 
-    public void insertBefore(Object n, Object o) throws ElementoInexistente;
+    public void insertBefore(Object n, Object o) throws ElementoInexistente, EListaVazia;
 
-    public void insertAfter(Object n, Object o) throws ElementoInexistente;
+    public void insertAfter(Object n, Object o) throws ElementoInexistente, EListaVazia;
 
     public Object replaceElement(Object n, Object o) throws EListaIndice, EListaVazia;
 
