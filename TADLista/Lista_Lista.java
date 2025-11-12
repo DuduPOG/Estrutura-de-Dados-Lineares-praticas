@@ -56,8 +56,11 @@ public class Lista_Lista {
         }
 
         @Override
-        public Object before(Object p) throws EListaIndice, ElementoInexistente, EListaVazia{
-            if (p == this.head.next.value){
+        public Object before(int p) throws EListaIndice, EListaVazia{
+            if (p < 0 || p >= this.size){
+                throw new EListaIndice("Índice inválido");
+            }
+            if (p == 0){
                 throw new EListaIndice("Não existe um elemento antes do primeiro elemento");
             }
             if (this.size < 2){
@@ -66,19 +69,27 @@ public class Lista_Lista {
             if (isEmpty()){
                 throw new EListaVazia("Lista vazia");
             }
+            if (p == this.size - 1){
+                return this.tail.prev.prev.value;
+            }
             No current = this.head.next.next;
+            int index = 1;
             while (current != this.tail){
-                if (current.value == p){
-                    return current.prev.value;
+                if (index == p){
+                    break;
                 }
+                index++;
                 current = current.next;
             }
-            throw new ElementoInexistente("Não existe um elemento 'p'");
+            return current.prev.value;
         }
 
         @Override
-        public Object after(Object p) throws EListaIndice, ElementoInexistente, EListaVazia{
-            if (p == this.tail.prev.value){
+        public Object after(int p) throws EListaIndice, EListaVazia{
+            if (p < 0 || p >= this.size){
+                throw new EListaIndice("Índice inválido");
+            }
+            if (p == this.size - 1){
                 throw new EListaIndice("Não existe um elemento depois do último elemento");
             }
             if (this.size < 2){
@@ -87,14 +98,19 @@ public class Lista_Lista {
             if (isEmpty()){
                 throw new EListaVazia("Lista vazia");
             }
+            if (p == 0){
+                return this.head.next.next.value;
+            }
             No current = this.head.next.next;
+            int index = 0;
             while (current != this.tail.prev){
-                if (current.value == p){
-                    return current.next.value;
+                if (index == p){
+                    break;
                 }
+                index++;
                 current = current.next;
             }
-            throw new ElementoInexistente("Não existe um elemento 'p'");
+            return current.next.value;
         }
 
         @Override

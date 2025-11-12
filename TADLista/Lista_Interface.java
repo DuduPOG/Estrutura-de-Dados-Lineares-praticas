@@ -12,9 +12,9 @@ public interface Lista_Interface {
 
     public Object last() throws EListaVazia;
 
-    public Object before(Object p) throws EListaIndice, ElementoInexistente, EListaVazia;
+    public Object before(int p) throws EListaIndice, EListaVazia;
 
-    public Object after(Object p) throws EListaIndice, ElementoInexistente, EListaVazia;
+    public Object after(int p) throws EListaIndice, EListaVazia;
     
     public void swapElements(Object n, Object q) throws ElementoInexistente, EListaVazia;
     
