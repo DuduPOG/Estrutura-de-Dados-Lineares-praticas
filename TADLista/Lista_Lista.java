@@ -36,22 +36,34 @@ public class Lista_Lista {
         }
 
         @Override
-        public boolean isFirst(Object n){
+        public boolean isFirst(Object n) throws EListaVazia{
+            if (isEmpty()){
+                return false;
+            }
             return this.head.next.value == n;
         }
 
         @Override
-        public boolean isLast(Object n){
+        public boolean isLast(Object n) throws EListaVazia{
+            if (isEmpty()){
+                return false;
+            }
             return this.tail.prev.value == n;
         }
 
         @Override
-        public Object first(){
+        public Object first() throws EListaVazia{
+            if (isEmpty()){
+                throw new EListaVazia("Lista vazia");
+            }
             return this.head.next.value;
         }
 
         @Override
-        public Object last(){
+        public Object last() throws EListaVazia{
+            if (isEmpty()){
+                throw new EListaVazia("Lista vazia");
+            }
             return this.tail.prev.value;
         }
 
@@ -63,11 +75,11 @@ public class Lista_Lista {
             if (p == 0){
                 throw new EListaIndice("Não existe um elemento antes do primeiro elemento");
             }
-            if (this.size < 2){
-                throw new ElementoInexistente("Este é o único elemento da lista");
-            }
             if (isEmpty()){
                 throw new EListaVazia("Lista vazia");
+            }
+            if (this.size < 2){
+                throw new ElementoInexistente("Este é o único elemento da lista");
             }
             if (p == this.size - 1){
                 return this.tail.prev.prev.value;
@@ -92,11 +104,11 @@ public class Lista_Lista {
             if (p == this.size - 1){
                 throw new EListaIndice("Não existe um elemento depois do último elemento");
             }
-            if (this.size < 2){
-                throw new ElementoInexistente("Este é o único elemento da lista");
-            }
             if (isEmpty()){
                 throw new EListaVazia("Lista vazia");
+            }
+            if (this.size < 2){
+                throw new ElementoInexistente("Este é o único elemento da lista");
             }
             if (p == 0){
                 return this.head.next.next.value;
@@ -225,8 +237,20 @@ public class Lista_Lista {
             if (isEmpty()){
                 throw new EListaVazia("Não é possível remover um elemento de uma lista vazia");
             }
-            No current = this.head.next;
-            while (current != this.tail){
+            if (this.head.next.value == n){
+                Object to_remove = this.head.next.value;
+                this.head.next = this.head.next.next;
+                this.size--;
+                return to_remove;
+            }
+            if (this.tail.prev.value == n){
+                Object to_remove = this.tail.prev.value;
+                this.tail.prev = this.tail.prev.prev;
+                this.size--;
+                return to_remove;
+            }
+            No current = this.head.next.next;
+            while (current != this.tail.prev){
                 if (current.value == n){
                     break;
                 }
@@ -279,8 +303,8 @@ public class Lista_Lista {
                 this.tail.prev.value = o;
                 return replaced;
             }
-            No current = this.head.next;
-            for (int i = 1; i < this.size - 2; ++i){
+            No current = this.head.next.next;
+            while (current != this.tail.prev){
                 if (current.value == n){
                     break;
                 }
