@@ -72,14 +72,14 @@ public class Lista_Lista {
             if (p < 0 || p >= this.size){
                 throw new EListaIndice("Índice inválido");
             }
-            if (p == 0){
-                throw new EListaIndice("Não existe um elemento antes do primeiro elemento");
-            }
             if (isEmpty()){
                 throw new EListaVazia("Lista vazia");
             }
             if (this.size < 2){
-                throw new ElementoInexistente("Este é o único elemento da lista");
+                throw new ElementoInexistente("Esta lista só tem um elemento");
+            }
+            if (p == 0){
+                throw new EListaIndice("Não existe um elemento antes do primeiro elemento");
             }
             if (p == this.size - 1){
                 return this.tail.prev.prev.value;
@@ -101,14 +101,14 @@ public class Lista_Lista {
             if (p < 0 || p >= this.size){
                 throw new EListaIndice("Índice inválido");
             }
-            if (p == this.size - 1){
-                throw new EListaIndice("Não existe um elemento depois do último elemento");
-            }
             if (isEmpty()){
                 throw new EListaVazia("Lista vazia");
             }
             if (this.size < 2){
-                throw new ElementoInexistente("Este é o único elemento da lista");
+                throw new ElementoInexistente("Esta lista só tem um elemento");
+            }
+            if (p == this.size - 1){
+                throw new EListaIndice("Não existe um elemento depois do último elemento");
             }
             if (p == 0){
                 return this.head.next.next.value;

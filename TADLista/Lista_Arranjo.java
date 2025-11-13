@@ -34,6 +34,10 @@ public class Lista_Arranjo {
             return this.size;
         }
         
+        public int get_capacity(){
+            return this.capacity;
+        }
+
         @Override
         public boolean isEmpty(){
             return this.size == 0;
@@ -76,14 +80,14 @@ public class Lista_Arranjo {
             if (p < 0 || p >= this.size){
                 throw new EListaIndice("Índice inválido");
             }
-            if (p == 0){
-                throw new ElementoInexistente("Não existe um elemento antes do primeiro elemento");
+            if (isEmpty()){
+                throw new EListaVazia("Lista vazia");
             }
             if (this.size < 2){
                 throw new ElementoInexistente("Esta lista só tem um elemento");
             }
-            if (isEmpty()){
-                throw new EListaVazia("Lista vazia");
+            if (p == 0){
+                throw new ElementoInexistente("Não existe um elemento antes do primeiro elemento");
             }
             if (p == this.size - 1){
                 return this.a[this.size - 2];
@@ -103,14 +107,14 @@ public class Lista_Arranjo {
             if (p < 0 || p >= this.size){
                 throw new EListaIndice("Índice inválido");
             }
-            if (p == 0){
-                throw new ElementoInexistente("Não existe um elemento antes do primeiro elemento");
+            if (isEmpty()){
+                throw new EListaVazia("Lista vazia");
             }
             if (this.size < 2){
                 throw new ElementoInexistente("Esta lista só tem um elemento");
             }
-            if (isEmpty()){
-                throw new EListaVazia("Lista vazia");
+            if (p == this.size - 1){
+                throw new EListaIndice("Não existe um elemento depois do último elemento");
             }
             if (p == 0){
                 return this.a[1];
