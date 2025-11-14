@@ -89,17 +89,7 @@ public class Lista_Arranjo {
             if (p == 0){
                 throw new ElementoInexistente("Não existe um elemento antes do primeiro elemento");
             }
-            if (p == this.size - 1){
-                return this.a[this.size - 2];
-            }
-            Object before = null;
-            for (int i = 1; i < this.size - 1; ++i){
-                if (i == p){
-                    before = this.a[i - 1];
-                    break;
-                }
-            }
-            return before;
+            return this.a[p - 1];
         }
 
         @Override
@@ -116,17 +106,7 @@ public class Lista_Arranjo {
             if (p == this.size - 1){
                 throw new EListaIndice("Não existe um elemento depois do último elemento");
             }
-            if (p == 0){
-                return this.a[1];
-            }
-            Object after = null;
-            for (int i = 1; i < this.size - 1; ++i){
-                if (i == p){
-                    after = this.a[i + 1];
-                    break;
-                }
-            }
-            return after;
+            return this.a[p + 1];
         }
 
         @Override
@@ -146,7 +126,7 @@ public class Lista_Arranjo {
                 return;
             }
             if (n == this.a[this.size - 1]){
-                this.a[this.size] = n;
+                this.a[this.size] = this.a[this.size - 1];
                 this.a[this.size - 1] = o;
                 this.size++;
                 return;
@@ -220,11 +200,8 @@ public class Lista_Arranjo {
             if (NValor == null || QValor == null){
                 throw new ElementoInexistente("Um dos elementos não existe");
             }
-            Object aux = NValor;
-            NValor = QValor;
-            QValor = aux;
-            this.a[NIndice] = NValor;
-            this.a[QIndice] = QValor;
+            this.a[NIndice] = QValor;
+            this.a[QIndice] = NValor;
         }
         
         @Override
@@ -249,7 +226,7 @@ public class Lista_Arranjo {
                 return to_remove;
             }
             Object to_remove = null;
-            for (int i = 1; i < this.size; ++i){
+            for (int i = 1; i < this.size - 1; ++i){
                 if (this.a[i] == n){
                     to_remove = this.a[i];
                     for (int j = i; j < this.size - 1; ++j){

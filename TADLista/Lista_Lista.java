@@ -36,7 +36,7 @@ public class Lista_Lista {
         }
 
         @Override
-        public boolean isFirst(Object n) throws EListaVazia{
+        public boolean isFirst(Object n){
             if (isEmpty()){
                 return false;
             }
@@ -44,7 +44,7 @@ public class Lista_Lista {
         }
 
         @Override
-        public boolean isLast(Object n) throws EListaVazia{
+        public boolean isLast(Object n){
             if (isEmpty()){
                 return false;
             }
@@ -84,14 +84,26 @@ public class Lista_Lista {
             if (p == this.size - 1){
                 return this.tail.prev.prev.value;
             }
-            No current = this.head.next.next;
-            int index = 1;
-            while (current != this.tail){
+            if (p < this.size / 2){
+                No current = this.head.next;
+                int index = 0;
+                while (current != this.tail.prev){
+                    if (index == p){
+                        break;
+                    }
+                    index++;
+                    current = current.next;
+                }
+                return current.prev.value;
+            }
+            No current = this.tail.prev;
+            int index = this.size - 1;
+            while (current != this.head.next){
                 if (index == p){
                     break;
                 }
-                index++;
-                current = current.next;
+                index--;
+                current = current.prev;
             }
             return current.prev.value;
         }
@@ -113,16 +125,28 @@ public class Lista_Lista {
             if (p == 0){
                 return this.head.next.next.value;
             }
-            No current = this.head.next.next;
-            int index = 0;
-            while (current != this.tail.prev){
+            if (p < this.size / 2){
+               No current = this.head.next;
+                int index = 0;
+                while (current != this.tail.prev){
+                    if (index == p){
+                        break;
+                    }
+                    index++;
+                    current = current.next;
+                }
+                return current.next.value; 
+            }
+            No current = this.tail.prev;
+            int index = this.size - 1;
+            while (current != this.head.next){
                 if (index == p){
                     break;
                 }
-                index++;
-                current = current.next;
+                index--;
+                current = current.prev;
             }
-            return current.next.value;
+            return current.next.value; 
         }
 
         @Override
@@ -142,7 +166,7 @@ public class Lista_Lista {
             }
             if (n == this.tail.prev.value){
                 No toAdd = new No();
-                toAdd.prev = this.head.prev.prev;
+                toAdd.prev = this.tail.prev.prev;
                 toAdd.value = o;
                 toAdd.next = this.tail.prev;
                 this.tail.prev.prev.next = toAdd;
@@ -156,12 +180,13 @@ public class Lista_Lista {
                     No toAdd = new No();
                     toAdd.prev = current.prev;
                     toAdd.value = o;
-                    toAdd.next = current.next;
+                    toAdd.next = current;
                     current.prev.next = toAdd;
                     current.prev = toAdd;
                     this.size++;
                     return;
                 }
+                current = current.next;
             }
             throw new ElementoInexistente("O elemento 'n' não está presente na lista");
         }
@@ -183,7 +208,7 @@ public class Lista_Lista {
             }
             if (n == this.tail.prev.value){
                 No toAdd = new No();
-                toAdd.prev = this.head.prev;
+                toAdd.prev = this.tail.prev;
                 toAdd.value = o;
                 toAdd.next = this.tail;
                 this.tail.prev.next = toAdd;
@@ -203,6 +228,7 @@ public class Lista_Lista {
                     this.size++;
                     return;
                 }
+                current = current.next;
             }
             throw new ElementoInexistente("O elemento 'n' não está presente na lista");
         }
@@ -240,12 +266,14 @@ public class Lista_Lista {
             if (this.head.next.value == n){
                 Object to_remove = this.head.next.value;
                 this.head.next = this.head.next.next;
+                this.head.next.prev = this.head;
                 this.size--;
                 return to_remove;
             }
             if (this.tail.prev.value == n){
                 Object to_remove = this.tail.prev.value;
                 this.tail.prev = this.tail.prev.prev;
+                this.tail.prev.next = this.tail;
                 this.size--;
                 return to_remove;
             }
@@ -256,7 +284,7 @@ public class Lista_Lista {
                 }
                 current = current.next;
             }
-            if (current == this.tail){
+            if (current == this.tail.prev){
                 throw new ElementoInexistente("Não é possível remover um elemento que não existe");
             }
             Object to_remove = current.value;

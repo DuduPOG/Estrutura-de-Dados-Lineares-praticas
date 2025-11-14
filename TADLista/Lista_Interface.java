@@ -4,9 +4,9 @@ public interface Lista_Interface {
     
     public boolean isEmpty();
 
-    public boolean isFirst(Object n) throws EListaVazia;
+    public boolean isFirst(Object n);
 
-    public boolean isLast(Object n) throws EListaVazia;
+    public boolean isLast(Object n);
 
     public Object first() throws EListaVazia;
 
