@@ -1,7 +1,7 @@
-public class TesteListaLista extends Lista_Lista{
+public class TesteSeqLista extends  Seq_Lista{
     public static void main(String[] args) {
         try {
-            ListaListaLigada lista = new ListaListaLigada();
+            SeqListaLigada lista = new SeqListaLigada();
 
             System.out.println("=== TESTES INICIAIS ===");
             System.out.println("Está vazio? " + lista.isEmpty());
@@ -62,7 +62,7 @@ public class TesteListaLista extends Lista_Lista{
             System.out.print("Tentando acessar posição inexistente com before... ");
             try {
                 lista.before(999);
-            } catch (EListaIndice e) {
+            } catch (ESeqIndice e) {
                 System.out.println("OK! Recebida: " + e.getMessage());
             }
 
@@ -75,9 +75,9 @@ public class TesteListaLista extends Lista_Lista{
 
             System.out.print("Tentando remover de lista vazia... ");
             try {
-                ListaListaLigada vazio = new ListaListaLigada();
+                SeqListaLigada vazio = new SeqListaLigada();
                 vazio.remove("QUALQUER COISA");
-            } catch (EListaVazia e) {
+            } catch (ESeqVazia e) {
                 System.out.println("OK! Exceção: " + e.getMessage());
             }
 

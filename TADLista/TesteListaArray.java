@@ -78,7 +78,7 @@ public class TesteListaArray extends  Lista_Arranjo{
 
             System.out.print("Tentando remover de lista vazia... ");
             try {
-                Lista_Arranjo.ListaArray vazio = new Lista_Arranjo.ListaArray();
+                ListaArray vazio = new ListaArray();
                 vazio.remove(0);
             } catch (EListaVazia e) {
                 System.out.println("OK! Exceção: " + e.getMessage());
