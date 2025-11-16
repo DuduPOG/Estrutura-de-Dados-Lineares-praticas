@@ -18,12 +18,29 @@ public class Seq_Lista extends No{
         }
         
         public No atRank(int index) throws ESeqIndice, ESeqVazia{
-            No current = new No();
+            No current;
+            if (index < this.size / 2){
+                current = this.head.getNext();
+                for (int i = 0; i < index; ++i){
+                    current = current.getNext();
+                }
+            } else {
+                current = this.tail.getPrev();
+                for (int i = this.size - 1; i > index; --i){
+                    current = current.getPrev();
+                }
+            }
             return current;
         }
 
         public int rankOf(No no) throws ElementoInexistente{
-            return 0;
+            No current = this.head.getNext();
+            int index = 0;
+            while (current != no && current != this.tail) { 
+                current = current.getNext();
+                index++;
+            }
+            return index;
         }
 
         @Override
