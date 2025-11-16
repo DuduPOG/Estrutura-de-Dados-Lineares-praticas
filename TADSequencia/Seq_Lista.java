@@ -314,22 +314,162 @@ public class Seq_Lista extends No{
 
         @Override
         public Object elemAtRank(int index) throws ESeqIndice, ESeqVazia{
-            return 0;
+            if(isEmpty()){
+                throw new ESeqVazia("Não é possível mostrar um elemento de uma sequência vazia");
+            }
+            if (index < 0 || index >= this.size){
+                throw new ESeqIndice("Índice inválido");
+            }
+            if (index == 0){
+                return this.head.getNext().getValue();
+            }
+            if (index == this.size - 1){
+                return this.tail.getPrev().getValue();
+            }
+            No current = this.head.getNext();
+            if (index < this.size / 2){
+                for (int i = 0; i < index; i++){
+                    current = current.getNext();
+                }
+            }else{
+              current = this.tail.getPrev();
+                for (int i = this.size - 1; i > index; --i){
+                    current = current.getPrev();
+                }     
+            }   
+            return current.getValue();
         }
 
         @Override
         public void insertAtRank(int index, Object o) throws ESeqIndice{
-
+            if(index < 0 || index > this.size){
+                throw new ESeqIndice("Índice inválido");
+            } else {
+                No to_add = new No();
+                if (index == 0){
+                    to_add.setValue(o);
+                    to_add.setPrev(this.head);
+                    to_add.setNext(this.head.getNext());
+                    this.head.getNext().setPrev(to_add);
+                    this.head.setNext(to_add);
+                    this.size++;
+                    return;
+                }
+                if (index == this.size){
+                    to_add.setValue(o);
+                    to_add.setNext(this.tail);
+                    to_add.setPrev(this.tail.getPrev());
+                    this.tail.getPrev().setNext(to_add);
+                    this.tail.setPrev(to_add);
+                    this.size++;
+                    return;
+                }
+                to_add.setValue(o);
+                if (index < this.size / 2){
+                    No current = this.head.getNext().getNext();
+                    for(int i = 1; i < index; ++i){
+                        current = current.getNext();
+                    }
+                    to_add.setNext(current);
+                    to_add.setPrev(current.getPrev());
+                    current.getPrev().setNext(to_add);
+                    current.setPrev(to_add);
+                    this.size++;
+                }else{
+                    No current = this.tail.getPrev();
+                    for(int i = this.size - 1; i > index; --i){
+                        current = current.getPrev();
+                    }
+                    to_add.setNext(current);
+                    to_add.setPrev(current.getPrev());
+                    current.getPrev().setNext(to_add);
+                    current.setPrev(to_add);
+                    this.size++;
+                }
+            }
         }
 
         @Override
         public Object removeAtRank(int index) throws ESeqIndice, ESeqVazia{
-            return 0;
+            if(isEmpty()){
+                throw new ESeqVazia("Não é possível remover um elemento de uma sequência vazia");
+            }
+            if (index < 0 || index >= this.size){
+                throw new ESeqIndice("Índice inválido");
+            }
+            Object to_remove;
+            if (index == 0) {
+                to_remove = this.head.getNext().getValue();
+                this.head.setNext(this.head.getNext().getNext());
+                this.head.getNext().setPrev(this.head);
+                this.size--;
+                return to_remove;
+            }
+            if (index == this.size - 1) { 
+                to_remove = this.tail.getPrev().getValue();
+                this.tail.setPrev(this.tail.getPrev().getPrev());
+                this.tail.getPrev().setNext(this.tail);
+                this.size--;
+                return to_remove;
+            }
+            if (index < this.size / 2){
+                No current = this.head.getNext().getNext();
+                for (int i = 1; i < index; ++i){
+                    current = current.getNext();
+                }
+                to_remove = current.getValue();
+                current.getPrev().setNext(current.getNext());
+                current.getNext().setPrev(current.getPrev());
+                this.size--;
+                return to_remove;
+            }else{
+                No current = this.tail.getPrev().getPrev();
+                for (int i = this.size - 2; i > index; --i){
+                    current = current.getPrev();
+                }
+                to_remove = current.getValue();
+                current.getPrev().setNext(current.getNext());
+                current.getNext().setPrev(current.getPrev());
+                this.size--;
+                return to_remove;
+            }
         }
 
         @Override
         public Object replaceAtRank(int index, Object o) throws ESeqIndice, ESeqVazia{
-            return 0;
+            if(isEmpty()){
+                throw new ESeqVazia("Não é possível substituir elemento de uma sequência vazia");
+            }
+            if (index < 0 || index >= this.size){
+                throw new ESeqIndice("Índice inválido");
+            }
+            Object old_element;
+            if (index == 0){
+                old_element = this.head.getNext().getValue();
+                this.head.getNext().setValue(o);
+                return old_element;
+            }
+            if (index == this.size - 1){
+                old_element = this.tail.getPrev().getValue();
+                this.tail.getPrev().setValue(o);
+                return old_element;
+            }
+            if (index < this.size / 2){
+                No current = this.head.getNext().getNext();
+                for (int i = 1; i < index; ++i){
+                    current = current.getNext();
+                }
+                old_element = current.getValue();
+                current.setValue(o);
+            }else{
+                No current = this.tail.getPrev().getPrev();
+                for (int i = this.size - 2; i < index; ++i){
+                    current = current.getPrev();
+                }
+                old_element = current.getValue();
+                current.setValue(o);
+            }
+            return old_element;
         }
 
         @Override

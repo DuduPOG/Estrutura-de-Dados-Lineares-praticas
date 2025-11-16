@@ -248,22 +248,68 @@ public class Seq_Arranjo {
 
         @Override
         public Object elemAtRank(int index) throws ESeqIndice, ESeqVazia{
-            return 0;
+            if(isEmpty()){
+                throw new ESeqVazia("Não é possível mostrar um elemento de uma sequência vazia");
+            }
+            if (index < 0 || index >= this.size){
+                throw new ESeqIndice("Índice inválido");
+            }
+            return this.a[index];
         }
 
         @Override
         public void insertAtRank(int index, Object o) throws ESeqIndice{
+            if (index < 0 || index > this.size){
+                throw new ESeqIndice("Índice inválido");
+            }
+            if(this.size == this.capacity){
+                increase_capacity();
+            }
+            if (index == this.inicio){
 
+            }
+            if (index == this.fim){
+                this.a[index] = o;
+                this.n++;
+                }else{
+                    for(int i = this.n; i > index; --i){
+                    this.a[i] = this.a[i - 1];
+                    }
+                    this.a[index] = o;
+                    ++this.n;
+            }
         }
 
         @Override
         public Object removeAtRank(int index) throws ESeqIndice, ESeqVazia{
-            return 0;
+            if(isEmpty()){
+                throw new ESeqVazia("Não é possível remover um elemento de uma sequência vazia");
+            }
+            if (index < 0 || index >= this.n){
+                throw new ESeqIndice("Índice inválido");
+            }
+            if (this.size * 1.0 / this.capacity * 1.0 <= 1.0 / 3.0 && this.capacity > 8){
+                decrease_capacity();
+            }
+            Object to_remove = this.a[index];
+            for(int i = index; i < this.n - 1; ++i){
+                this.a[i] = this.a[i + 1];
+            }
+            this.n--;
+            return to_remove;
         }
 
         @Override
         public Object replaceAtRank(int index, Object o) throws ESeqIndice, ESeqVazia{
-            return 0;
+            if (isEmpty()){
+                throw new ESeqVazia("Não é possível substituir elemento de uma sequência vazia");
+            }
+            if (index < 0 || index >= this.n){
+                throw new ESeqIndice("Índice inválido");
+            }
+            Object old_element = this.a[index];
+            this.a[index] = o;
+            return  old_element;
         }
         
         @Override
