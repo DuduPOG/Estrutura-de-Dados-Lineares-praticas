@@ -28,7 +28,7 @@ public class Seq_Lista {
                     return other_current;
                 }
                 current = current.getNext();
-                other_current = other_current.getNext();
+                other_current = other_current.getPrev();
             }
             return null;
         }
@@ -55,17 +55,24 @@ public class Seq_Lista {
             return current;
         }
 
-        public int rankOf(No no) throws ElementoInexistente{
+        public int rankOf(No no) throws NoInexistente{
             No current = this.head.getNext();
+            No other_current = this.tail.getPrev();
             int index = 0;
-            while (current != no && current != this.tail) { 
+            int other_index = this.size - 1;
+            while (current != no && current != this.tail && other_current != no && other_current != this.head) { 
                 current = current.getNext();
+                other_current = other_current.getPrev();
                 index++;
+                other_index--;
             }
-            if (current == this.tail){
-                throw new ElementoInexistente("Esse nó não existe na sequência");
+            if (current == this.tail && other_current == this.head){
+                throw new NoInexistente("Esse nó não existe na sequência");
             }
-            return index;
+            if (current == no){
+                return index;
+            }
+            return other_index;
         }
 
         @Override
@@ -74,19 +81,19 @@ public class Seq_Lista {
         }
 
         @Override
-        public boolean isFirst(Object n){
+        public boolean isFirst(No no){
             if (isEmpty()){
                 return false;
             }
-            return this.head.getNext().getValue() == n;
+            return 0 == rankOf(no);
         }
 
         @Override
-        public boolean isLast(Object n){
+        public boolean isLast(No no){
             if (isEmpty()){
                 return false;
             }
-            return this.tail.getPrev().getValue() == n;
+            return this.size - 1 == rankOf(no);
         }
 
         @Override
@@ -106,55 +113,56 @@ public class Seq_Lista {
         }
 
         @Override
-        public Object before(int p) throws ESeqIndice, ESeqVazia{
+        public Object before(int index) throws ESeqIndice, ESeqVazia{
             if (isEmpty()){
                 throw new ESeqVazia("Sequência vazia");
             }
-            if (p < 0 || p >= this.size){
+            if (index < 0 || index >= this.size){
                 throw new ESeqIndice("Índice inválido");
             }
             if (this.size < 2){
-                throw new ElementoInexistente("Esta sequência só tem um elemento");
+                throw new NoInexistente("Esta sequência só tem um nó");
             }
-            if (p == this.size - 1){
+            if (index == this.size - 1){
                 return this.tail.getPrev().getPrev().getValue();
             }
-            if (p == 0){
-                throw new ESeqIndice("Não existe um elemento antes do último elemento");
+            if (index == 0){
+                throw new ESeqIndice("Não existe um nó antes do último elemento");
             }
-            No current = atRank(p);
+            No current = atRank(index);
             return current.getPrev().getValue();
         }
 
         @Override
-        public Object after(int p) throws ESeqIndice, ESeqVazia{
+        public Object after(int index) throws ESeqIndice, ESeqVazia{
             if (isEmpty()){
                 throw new ESeqVazia("Sequência vazia");
             }
-            if (p < 0 || p >= this.size){
+            if (index < 0 || index >= this.size){
                 throw new ESeqIndice("Índice inválido");
             }
             if (this.size < 2){
-                throw new ElementoInexistente("Esta sequência só tem um elemento");
+                throw new NoInexistente("Esta sequência só tem um nó");
             }
-            if (p == this.size - 1){
-                throw new ESeqIndice("Não existe um elemento depois do último elemento");
+            if (index == this.size - 1){
+                throw new ESeqIndice("Não existe um nó depois do último elemento");
             }
-            if (p == 0){
+            if (index == 0){
                 return this.head.getNext().getNext().getValue();
             }
-            No current = atRank(p);
+            No current = atRank(index);
             return current.getNext().getValue();
         }
 
         @Override
-        public void insertBefore(Object n, Object o) throws ElementoInexistente, ESeqVazia{
+        public void insertBefore(No no, Object o) throws ESeqVazia{
             if(isEmpty()){
                 throw new ESeqVazia("Sequência vazia");
             }
-            No current = find(n);
+            int NoIndex = rankOf(no);
+            No current = atRank(NoIndex);
             if (current == null){
-                throw new ElementoInexistente("O elemento 'n' não está presente na sequência");
+                throw new NoInexistente("O Nó 'no' não está presente na sequência");
             }
             No toAdd = new No();
             toAdd.setValue(o);
@@ -166,13 +174,14 @@ public class Seq_Lista {
         }
 
         @Override
-        public void insertAfter(Object n, Object o) throws ElementoInexistente, ESeqVazia{
+        public void insertAfter(No no, Object o) throws NoInexistente, ESeqVazia{
             if(isEmpty()){
                 throw new ESeqVazia("Sequência vazia");
             }
-            No current = find(n);
+            int NoIndex = rankOf(no);
+            No current = atRank(NoIndex);
             if (current == null){
-                throw new ElementoInexistente("O elemento 'n' não está presente na sequência");
+                throw new NoInexistente("O Nó 'no' não está presente na sequência");
             }
             No toAdd = new No();
             toAdd.setValue(o);
@@ -184,14 +193,16 @@ public class Seq_Lista {
         }
         
         @Override
-        public void swapElements(Object n, Object q) throws ElementoInexistente, ESeqVazia{
+        public void swapElements(No no, No q) throws NoInexistente, ESeqVazia{
             if (this.size < 2){
-                throw new ESeqVazia("Não é possível trocar elementos de uma sequência com menos de 2 elementos ou vazia");
+                throw new ESeqVazia("Não é possível trocar as posições dos nós de uma sequência com menos de 2 nós ou vazia");
             }
-            No N = find(n);
-            No Q = find(q);
+            int NoIndex = rankOf(no);
+            No N = atRank(NoIndex);
+            int QIndex = rankOf(q);
+            No Q = atRank(QIndex);
             if (N == null || Q == null){
-                throw new ElementoInexistente("Um dos elementos não existe");
+                throw new NoInexistente("Um dos nós não existe");
             }
             Object aux = N.getValue();
             N.setValue(Q.getValue());
@@ -207,29 +218,30 @@ public class Seq_Lista {
         }
 
         @Override
-        public Object remove(Object n) throws ESeqVazia, ElementoInexistente{
+        public Object remove(No no) throws ESeqVazia, NoInexistente{
             if (isEmpty()){
-                throw new ESeqVazia("Não é possível remover um elemento de uma sequência vazia");
+                throw new ESeqVazia("Não é possível remover um nó de uma sequência vazia");
             }
-            if (this.head.getNext().getValue() == n){
+            if (this.head.getNext().getValue() == no){
                 Object to_remove = this.head.getNext().getValue();
                 this.head.setNext(this.head.getNext().getNext());
                 this.head.getNext().setPrev(this.head);
                 this.size--;
                 return to_remove;
             }
-            if (this.tail.getPrev().getValue() == n){
+            if (this.tail.getPrev().getValue() == no){
                 Object to_remove = this.tail.getPrev().getValue();
                 this.tail.setPrev(this.tail.getPrev().getPrev());
                 this.tail.getPrev().setNext(this.tail);
                 this.size--;
                 return to_remove;
             }
-            No to_remove = find(n);
+            int toRemoveIndex = rankOf(no);
+            No to_remove = atRank(toRemoveIndex);
             if (to_remove != null){
                 return removeNo(to_remove);
             }
-            throw new ElementoInexistente("Não é possível remover um elemento que não existe");
+            throw new NoInexistente("Não é possível remover um nó que não existe");
         }
         
         @Override
@@ -299,7 +311,7 @@ public class Seq_Lista {
         @Override
         public Object removeAtRank(int index) throws ESeqVazia, ESeqIndice{
             if (isEmpty()){
-                throw new ESeqVazia("Não é possível substituir elementos de uma sequência vazia");
+                throw new ESeqVazia("Não é possível remover um nó de uma sequência vazia");
             }
             if (index < 0 || index >= this.size){
                 throw new ESeqIndice("Índice inválido");
@@ -314,7 +326,7 @@ public class Seq_Lista {
         @Override
         public Object replaceAtRank(int index, Object o) throws ESeqVazia, ESeqIndice{
             if (isEmpty()){
-                throw new ESeqVazia("Não é possível substituir elementos de uma sequência vazia");
+                throw new ESeqVazia("Não é possível substituir um nó de uma sequência vazia");
             }
             if (index < 0 || index >= this.size){
                 throw new ESeqIndice("Índice inválido");
@@ -326,13 +338,14 @@ public class Seq_Lista {
         }
 
         @Override
-        public Object replaceElement(Object n, Object o) throws ElementoInexistente, ESeqVazia{
+        public Object replaceElement(No no, Object o) throws NoInexistente, ESeqVazia{
             if (isEmpty()){
-                throw new ESeqVazia("Não é possível substituir elementos de uma sequência vazia");
+                throw new ESeqVazia("Não é possível substituir um nó de uma sequência vazia");
             }
-            No to_replace = find(n);
+            int toReplaceIndex = rankOf(no);
+            No to_replace = atRank(toReplaceIndex);
             if (to_replace == null){
-                throw new ElementoInexistente("Não é possível substituir um elemento que não existe");
+                throw new NoInexistente("Não existe um nó com esse elemento");
             }
             Object replaced = to_replace.getValue();
             to_replace.setValue(o);
