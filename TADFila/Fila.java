@@ -1,10 +1,8 @@
 public interface Fila {
 
     public int tamanho();
-    
-    public boolean estaVazia();
 
-    public boolean estaCheia();
+    public boolean estaVazia();
     
     public Object inicio() throws EFilaVazia;
     

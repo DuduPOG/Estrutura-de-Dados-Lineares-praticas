@@ -6,27 +6,50 @@ public class testeFila {
         private int finalFila;
         private Object[] a;
 
-        public FilaArray(int capacidade) {
+        public FilaArray() {
             this.tamanho = 0;
-            this.capacidade = capacidade;
+            this.capacidade = 8;
             this.primeiro = 0;
-            this.finalFila = this.primeiro + 1;
+            this.finalFila = this.primeiro;
             this.a = new Object[this.capacidade];
+        }
+
+        public void aumentar_capacidade(){
+            int antiga_capacidade = this.capacidade;
+            this.capacidade *= 2;
+            Object[] b = new Object[this.capacidade];
+            int ii;
+            for (int i = 0; i < this.tamanho; ++i){
+                ii = (this.primeiro + i) % antiga_capacidade;
+                b[i] = this.a[ii];
+            }
+            this.a = b;
+            this.primeiro = 0;
+            this.finalFila = this.tamanho;
+        }
+
+        public void diminuir_capacidade(){
+            int antiga_capacidade = this.capacidade;
+            this.capacidade /= 2;
+            Object[] b = new Object[this.capacidade];
+            int ii;
+            for (int i = 0; i < this.tamanho; ++i){
+                ii = (this.primeiro + i) % antiga_capacidade;
+                b[i] = this.a[ii];
+            }
+            this.a = b;
+            this.primeiro = 0;
+            this.finalFila = this.tamanho;
         }
 
         @Override
         public int tamanho(){
-            return this.tamanho;
+            return (this.capacidade - this.primeiro + this.finalFila) % this.capacidade;
         }
         
         @Override
         public boolean estaVazia(){
             return this.primeiro == this.finalFila;
-        }
-
-        @Override
-        public boolean estaCheia(){
-            return this.primeiro + 1 == this.finalFila;
         }
 
         @Override
@@ -39,29 +62,21 @@ public class testeFila {
 
         @Override
         public void enfileirar(Object o){
-            if (estaCheia()){
-                int antiga_capacidade = this.capacidade;
-                this.capacidade *= 2;
-                Object[] b = new Object[this.capacidade];
-                for (int i = 0; i < this.tamanho; ++i){
-                    int ii = (this.primeiro + i) % antiga_capacidade;
-                    b[i] = this.a[ii];
-                }
-                this.a = b;
-                this.primeiro = 0;
-                this.a[this.finalFila] = o;
-                this.finalFila = ++this.tamanho;
-            } else {
+            if (this.tamanho + 1 == this.capacidade){
+                aumentar_capacidade();
+            }
             this.a[this.finalFila] = o;
             ++this.tamanho;
             this.finalFila = (this.finalFila + 1) % this.capacidade;
-            }
         }
 
         @Override
         public Object desenfileirar() throws EFilaVazia {
             if (estaVazia()){
                 throw new EFilaVazia("A fila está vazia");
+            }
+            if (this.tamanho * 1.0 / this.capacidade * 1.0 <= 1.0 / 3.0){
+                diminuir_capacidade();
             }
             Object saindo = this.a[this.primeiro];
             this.primeiro = (this.primeiro + 1) % this.capacidade;
@@ -71,19 +86,16 @@ public class testeFila {
     }
 
     public static void main(String[] args) {			
-		FilaArray pp = new FilaArray(1);
+		FilaArray pp = new FilaArray();
 		System.out.println("inserindo");
 		for(int f = 0; f < 16; f++){
 		  System.out.println(f);		  
-		  pp.push_v(f);
-          pp.push_p(f);
+		  pp.enfileirar(f);
 		}
 		System.out.println("retirando");
 		for(int f = 0; f < 16; f++){
 			  System.out.print(f);
-			  System.out.println(" - " + pp.pop_v());
-              System.err.print(f);
-              System.out.println(" . " + pp.pop_p());
+			  System.out.println(" - " + pp.desenfileirar());
 		}
 	}
 }
