@@ -4,30 +4,30 @@ public interface Lista_Interface {
     
     public boolean isEmpty();
 
-    public boolean isFirst(Object n);
+    public boolean isFirst(No no);
 
-    public boolean isLast(Object n);
+    public boolean isLast(No no);
 
-    public Object first() throws EListaVazia;
+    public No first() throws EListaVazia;
 
-    public Object last() throws EListaVazia;
+    public No last() throws EListaVazia;
 
-    public Object before(int p) throws EListaIndice, EListaVazia;
+    public No before(int index) throws EListaIndice, EListaVazia;
 
-    public Object after(int p) throws EListaIndice, EListaVazia;
+    public No after(int index) throws EListaIndice, EListaVazia;
     
-    public void swapElements(Object n, Object q) throws ElementoInexistente, EListaVazia;
+    public void swapElements(No n, No q) throws ElementoInexistente, EListaVazia;
     
-    public Object remove(Object n) throws EListaVazia, ElementoInexistente;
+    public Object remove(No n) throws EListaVazia, ElementoInexistente;
     
     public void insertFirst(Object o);
 
     public void insertLast(Object o);
 
-    public void insertBefore(Object n, Object o) throws ElementoInexistente, EListaVazia;
+    public No insertBefore(No n, Object o) throws EListaVazia;
 
-    public void insertAfter(Object n, Object o) throws ElementoInexistente, EListaVazia;
+    public No insertAfter(No n, Object o) throws EListaVazia;
 
-    public Object replaceElement(Object n, Object o) throws EListaIndice, EListaVazia;
+    public Object replaceElement(No n, Object o) throws EListaIndice, EListaVazia;
 
 }

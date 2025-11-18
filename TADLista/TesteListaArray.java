@@ -2,7 +2,6 @@ public class TesteListaArray extends  Lista_Arranjo{
     public static void main(String[] args) {
         try {
             ListaArray lista = new ListaArray();
-
             System.out.println("=== TESTES INICIAIS ===");
             System.out.println("Capacidade inicial: " + lista.get_capacity());
             System.out.println("Está vazio? " + lista.isEmpty());
@@ -21,15 +20,16 @@ public class TesteListaArray extends  Lista_Arranjo{
             System.out.println("Novo último elemento: " + lista.last());
             System.out.println("Tamanho atual: " + lista.size());
 
-            System.out.println("\n=== INSERÇÃO EM POSIÇÃO ESPECÍFICA ===");
-            lista.insertAfter("B", "X");  // entre A e B
-            System.out.println("Elemento na posição 2: " + lista.after(1));
+            System.out.println("\n=== INSERÇÃO APÓS ELEMENTO ESPECÍFICO ===");
+            int indexX = lista.insertAfter("B", "X");
+            System.out.println("Elemento inserido na posição: " + indexX);
+            System.out.println("Elemento após 'B': " + lista.after(lista.find("B")));
             System.out.println("Tamanho atual: " + lista.size());
 
             System.out.println("\n=== REPLACE ELEMENT ===");
             Object antigo = lista.replaceElement("X", "Y");
             System.out.println("Substituído '" + antigo + "' por 'Y'");
-            System.out.println("Elemento na posição 2: " + lista.after(1));
+            System.out.println("Elemento após 'B': " + lista.after(lista.find("B")));
 
             System.out.println("\n=== REMOÇÃO DE ELEMENTO ===");
             Object removido = lista.remove("Y");
@@ -45,41 +45,53 @@ public class TesteListaArray extends  Lista_Arranjo{
 
             System.out.println("\n=== TESTE DE REMOÇÕES MÚLTIPLAS ===");
             while (!lista.isEmpty() && lista.size() > 5) {
-                lista.remove("Z");
+                try {
+                    lista.remove("Z");
+                } catch (ElementoInexistente e) {
+                    System.out.println("Elemento Z não encontrado, parando laço...");
+                    break;
+                }
             }
-            lista.remove("A");
+            lista.remove(lista.last());
             System.out.println("Tamanho após remoções: " + lista.size());
             System.out.println("Capacidade após remoções: " + lista.get_capacity());
 
-            System.out.println("\n=== TESTES DE NAVEGAÇÃO (SE EXISTIREM) ===");
+            System.out.println("\n=== TESTES DE NAVEGAÇÃO ===");
             try {
                 System.out.println("First: " + lista.first());
                 System.out.println("Last: " + lista.last());
-                System.out.println("Elemento na posição 1: " + lista.after(0));
+                System.out.println("Elemento após o primeiro: " + lista.after(0));
             } catch (Exception e) {
                 System.out.println("Erro em navegação: " + e.getMessage());
             }
 
             System.out.println("\n=== TESTE DE EXCEÇÕES ===");
 
-            System.out.print("Tentando acessar posição inválida... ");
+            System.out.print("Tentando acessar posição inválida com before... ");
             try {
                 lista.before(999);
             } catch (EListaIndice e) {
                 System.out.println("OK! Recebida: " + e.getMessage());
             }
 
+            System.out.print("Tentando acessar elemento antes do primeiro... ");
+            try {
+                lista.before(0);
+            } catch (ElementoInexistente e) {
+                System.out.println("OK! Exceção: " + e.getMessage());
+            }
+
             System.out.print("Tentando remover elemento inexistente... ");
             try {
                 lista.remove("NÃO EXISTE");
-            } catch (Exception e) {
+            } catch (ElementoInexistente e) {
                 System.out.println("OK! Exceção: " + e.getMessage());
             }
 
             System.out.print("Tentando remover de lista vazia... ");
             try {
                 ListaArray vazio = new ListaArray();
-                vazio.remove(0);
+                vazio.remove("QUALQUER COISA");
             } catch (EListaVazia e) {
                 System.out.println("OK! Exceção: " + e.getMessage());
             }
@@ -91,3 +103,4 @@ public class TesteListaArray extends  Lista_Arranjo{
         }
     }
 }
+ 

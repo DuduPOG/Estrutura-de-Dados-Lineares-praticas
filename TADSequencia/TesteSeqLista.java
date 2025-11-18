@@ -15,7 +15,7 @@ public class TesteSeqLista extends Seq_Lista {
         testeAcessoPorIndice();
         testeIntegracao();
 
-        System.out.println("\n╔═══════════════════════════════════════════════════════════════╗");
+        System.out.println("\n╔════════════════════════════════════════════════════════════════╗");
         System.out.println("║              TODOS OS TESTES CONCLUÍDOS COM SUCESSO!           ║");
         System.out.println("╚════════════════════════════════════════════════════════════════╝");
     }
@@ -57,13 +57,13 @@ public class TesteSeqLista extends Seq_Lista {
             seq.insertFirst("B");
             seq.insertFirst("A");
             assert seq.size() == 3 : "Falha: tamanho deveria ser 3";
-            assert seq.first().equals("A") : "Falha: primeiro elemento deveria ser A";
+            assert seq.first().getValue().equals("A") : "Falha: primeiro elemento deveria ser A";
             System.out.println("✓ insertFirst() funciona corretamente - Sequência: [A, B, C]");
             
             // insertLast
             seq.insertLast("D");
             seq.insertLast("E");
-            assert seq.last().equals("E") : "Falha: último elemento deveria ser E";
+            assert seq.last().getValue().equals("E") : "Falha: último elemento deveria ser E";
             assert seq.size() == 5 : "Falha: tamanho deveria ser 5";
             System.out.println("✓ insertLast() funciona corretamente - Sequência: [A, B, C, D, E]");
             
@@ -131,7 +131,7 @@ public class TesteSeqLista extends Seq_Lista {
 
     // TESTE 4: Navegação (first, last, before, after)
     private static void testeNavegacao() {
-        System.out.println("\n┌─ TESTE 4: OPERAÇÕES DE NAVEGAÇÃO ─────────────────────────────┐");
+        System.out.println("\n┌─ TESTE 4: OPERAÇÕES DE NAVEGAÇÃO ────────────────────────────┐");
         try {
             SeqListaLigada seq = new SeqListaLigada();
             seq.insertLast("A");
@@ -140,32 +140,40 @@ public class TesteSeqLista extends Seq_Lista {
             seq.insertLast("D");
             
             // first
-            assert seq.first().equals("A") : "Falha: primeiro elemento deveria ser A";
-            System.out.println("✓ first() retorna: " + seq.first());
+            Object primeiro = seq.first().getValue();
+            assert primeiro.equals("A") : "Falha: primeiro elemento deveria ser A";
+            System.out.println("✓ first() retorna: " + primeiro);
             
             // last
-            assert seq.last().equals("D") : "Falha: último elemento deveria ser D";
-            System.out.println("✓ last() retorna: " + seq.last());
-            
-            // after
-            Object after1 = seq.after(1); // Depois de B
-            assert after1.equals("C") : "Falha: elemento após índice 1 deveria ser C";
-            System.out.println("✓ after(1) retorna: " + after1);
+            Object ultimo = seq.last().getValue();
+            assert ultimo.equals("D") : "Falha: último elemento deveria ser D";
+            System.out.println("✓ last() retorna: " + ultimo);
             
             // before
-            Object before2 = seq.before(2); // Antes de C
-            assert before2.equals("B") : "Falha: elemento antes de índice 2 deveria ser B";
-            System.out.println("✓ before(2) retorna: " + before2);
+            No noC = seq.find("C");
+            if (noC != null) {
+                Object antesDeC = seq.before(noC).getValue();
+                assert antesDeC.equals("B") : "Falha: elemento antes de C deveria ser B";
+                System.out.println("✓ before(C) retorna: " + antesDeC);
+            }
+            
+            // after
+            No noB = seq.find("B");
+            if (noB != null) {
+                Object depoisDeB = seq.after(noB).getValue();
+                assert depoisDeB.equals("C") : "Falha: elemento após B deveria ser C";
+                System.out.println("✓ after(B) retorna: " + depoisDeB);
+            }
             
             System.out.println("└─ TESTE 4 APROVADO ───────────────────────────────────────────┘");
-        } catch (AssertionError | ESeqVazia | ESeqIndice e) {
+        } catch (AssertionError | ESeqVazia | ESeqIndice | NoInexistente e) {
             System.out.println("✗ TESTE 4 FALHOU: " + e.getMessage());
         }
     }
 
     // TESTE 5: Replacement (replaceAtRank, replaceElement)
     private static void testeReplacement() {
-        System.out.println("\n┌─ TESTE 5: OPERAÇÕES DE SUBSTITUIÇÃO ──────────────────────────┐");
+        System.out.println("\n┌─ TESTE 5: OPERAÇÕES DE SUBSTITUIÇÃO ─────────────────────────┐");
         try {
             SeqListaLigada seq = new SeqListaLigada();
             seq.insertLast("A");
@@ -194,7 +202,7 @@ public class TesteSeqLista extends Seq_Lista {
 
     // TESTE 6: Swap de elementos
     private static void testeSwap() {
-        System.out.println("\n┌─ TESTE 6: OPERAÇÃO DE TROCA (SWAP) ───────────────────────────┐");
+        System.out.println("\n┌─ TESTE 6: OPERAÇÃO DE TROCA (SWAP) ──────────────────────────┐");
         try {
             SeqListaLigada seq = new SeqListaLigada();
             seq.insertLast("A");
@@ -206,8 +214,10 @@ public class TesteSeqLista extends Seq_Lista {
             
             if (noA != null && noC != null) {
                 seq.swapElements(noA, noC);
-                assert seq.first().equals("C") : "Falha: primeiro elemento deveria ser C";
-                assert seq.last().equals("A") : "Falha: último elemento deveria ser A";
+                Object primeiro = seq.first().getValue();
+                Object ultimo = seq.last().getValue();
+                assert primeiro.equals("C") : "Falha: primeiro elemento deveria ser C";
+                assert ultimo.equals("A") : "Falha: último elemento deveria ser A";
                 System.out.println("✓ swapElements() - Trocados A (primeiro) e C (último)");
                 System.out.println("  Sequência após swap: [C, B, A]");
             }
@@ -220,7 +230,7 @@ public class TesteSeqLista extends Seq_Lista {
 
     // TESTE 7: Verificações de posição (isFirst, isLast)
     private static void testeVerificacoes() {
-        System.out.println("\n┌─ TESTE 7: VERIFICAÇÕES DE POSIÇÃO ────────────────────────────┐");
+        System.out.println("\n┌─ TESTE 7: VERIFICAÇÕES DE POSIÇÃO ───────────────────────────┐");
         try {
             SeqListaLigada seq = new SeqListaLigada();
             seq.insertLast("A");
@@ -249,7 +259,7 @@ public class TesteSeqLista extends Seq_Lista {
 
     // TESTE 8: Acesso por índice (elemAtRank)
     private static void testeAcessoPorIndice() {
-        System.out.println("\n┌─ TESTE 8: ACESSO POR ÍNDICE (RANK) ───────────────────────────┐");
+        System.out.println("\n┌─ TESTE 8: ACESSO POR ÍNDICE (RANK) ──────────────────────────┐");
         try {
             SeqListaLigada seq = new SeqListaLigada();
             seq.insertLast(10);
@@ -329,7 +339,7 @@ public class TesteSeqLista extends Seq_Lista {
 
     // TESTE 10: Teste de Integração Completo
     private static void testeIntegracao() {
-        System.out.println("\n┌─ TESTE 10: TESTE DE INTEGRAÇÃO COMPLETO ─────────────────────┐");
+        System.out.println("\n┌─TESTE 10: TESTE DE INTEGRAÇÃO COMPLETO ─────────────────────┐");
         try {
             SeqListaLigada seq = new SeqListaLigada();
             
@@ -342,8 +352,10 @@ public class TesteSeqLista extends Seq_Lista {
             System.out.println("✓ Sequência criada com " + seq.size() + " elementos");
             
             // Verificar operações
-            assert seq.first().equals(1) && seq.last().equals(5);
-            System.out.println("✓ Primeiro: " + seq.first() + ", Último: " + seq.last());
+            Object primeiro = seq.first().getValue();
+            Object ultimo = seq.last().getValue();
+            assert primeiro.equals(1) && ultimo.equals(5);
+            System.out.println("✓ Primeiro: " + primeiro + ", Último: " + ultimo);
             
             // Modificar
             seq.insertAtRank(2, 2.5);
@@ -359,7 +371,7 @@ public class TesteSeqLista extends Seq_Lista {
             System.out.println("✓ Tamanho final: " + seq.size());
             System.out.println("✓ Sequência continua válida após todas as operações");
             
-            System.out.println("└─ TESTE 10 APROVADO ──────────────────────────────────────────┘");
+            System.out.println("└─TESTE 10 APROVADO ──────────────────────────────────────────┘");
         } catch (AssertionError | ESeqVazia | ESeqIndice e) {
             System.out.println("✗ TESTE 10 FALHOU: " + e.getMessage());
         }

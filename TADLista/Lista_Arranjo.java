@@ -1,10 +1,9 @@
 public class Lista_Arranjo {
-    public static class ListaArray implements Lista_Interface {
+    public static class ListaArray implements Array_Interface {
         private int size;
         private int capacity;
         private Object[] a;
         
-
         public ListaArray(){
             this.size = 0;
             this.capacity = 8;
@@ -36,6 +35,20 @@ public class Lista_Arranjo {
         
         public int get_capacity(){
             return this.capacity;
+        }
+
+        public int find(Object o) throws ElementoInexistente{
+            int j = this.size - 1;
+            for(int i = 0; i <= this.size / 2 && j >= this.size / 2; ++i){
+                if (this.a[i] == o){
+                    return i;
+                }
+                if (this.a[j] == o){
+                    return j;
+                }
+                j--;
+            }
+            throw new ElementoInexistente("Não existe esse elemento na lista");
         }
 
         @Override
@@ -110,98 +123,48 @@ public class Lista_Arranjo {
         }
 
         @Override
-        public void insertBefore(Object n, Object o) throws ElementoInexistente, EListaVazia{
+        public int insertBefore(Object n, Object o) throws EListaVazia{
             if(isEmpty()){
                 throw new EListaVazia("Lista vazia");
             }
             if (this.size == this.capacity){
                 increase_capacity();
             }
-            if (n == this.a[0]){
-                for (int i = this.size; i > 0; --i){
-                    this.a[i] = this.a[i - 1];
-                }
-                this.a[0] = o;
-                this.size++;
-                return;
+            int index = find(n);
+            for(int i = this.size - 1; i > index; --i){
+                this.a[i] = this.a[i - 1];
             }
-            if (n == this.a[this.size - 1]){
-                this.a[this.size] = this.a[this.size - 1];
-                this.a[this.size - 1] = o;
-                this.size++;
-                return;
-            }
-            for (int i = 1; i < this.size - 1; ++i){
-                if (this.a[i] == n){
-                    for (int j = this.size; j > i; --j){
-                        this.a[j] = this.a[j - 1];
-                    }
-                    this.a[i] = o;
-                    this.size++;
-                    return;
-                }
-            }
-            throw new ElementoInexistente("O elemento 'n' não está presente na lista");
+            this.a[index] = o;
+            this.size++;
+            return index;
         }
 
         @Override
-        public void insertAfter(Object n, Object o) throws ElementoInexistente, EListaVazia{
+        public int insertAfter(Object n, Object o) throws EListaVazia{
             if(isEmpty()){
                 throw new EListaVazia("Lista vazia");
             }
             if (this.size == this.capacity){
                 increase_capacity();
             }
-            if (n == this.a[0]){
-                for (int i = this.size; i > 1; --i){
-                    this.a[i] = this.a[i - 1];
-                }
-                this.a[1] = o;
-                this.size++;
-                return;
+            int index = find(n);
+            for(int i = this.size - 1; i > index; --i){
+                this.a[i] = this.a[i - 1];
             }
-            if (n == this.a[this.size - 1]){
-                this.a[this.size] = o;
-                this.size++;
-                return;
-            }
-            for (int i = 1; i < this.size - 1; ++i){
-                if (this.a[i] == n){
-                    for (int j = this.size; j > i + 1; --j){
-                        this.a[j] = this.a[j - 1];
-                    }
-                    this.a[i + 1] = o;
-                    this.size++;
-                    return;
-                }
-            }
-            throw new ElementoInexistente("O elemento 'n' não está presente na lista");
+            this.a[index + 1] = o;
+            this.size++;
+            return index + 1;
         }
         
         @Override
-        public void swapElements(Object n, Object q) throws ElementoInexistente, EListaVazia{
+        public void swapElements(Object n, Object q) throws EListaVazia{
             if (this.size < 2){
                 throw new EListaVazia("Não é possível trocar elementos de uma lista com menos de 2 elementos ou vazia");
             }
-            Object NValor = null;
-            int NIndice = 0;
-            Object QValor = null;
-            int QIndice = 0;
-            for (int i = 0; i < this.size; ++i){
-                if (this.a[i] == n){
-                    NValor = this.a[i];
-                    NIndice = i;
-                }
-                if (this.a[i] == q){
-                    QValor = this.a[i];
-                    QIndice = i;
-                }
-            }
-            if (NValor == null || QValor == null){
-                throw new ElementoInexistente("Um dos elementos não existe");
-            }
-            this.a[NIndice] = QValor;
-            this.a[QIndice] = NValor;
+            int NIndice = find(n);
+            int QIndice = find(q);
+            this.a[NIndice] = q;
+            this.a[QIndice] = n;
         }
         
         @Override
@@ -212,34 +175,12 @@ public class Lista_Arranjo {
             if (this.size * 1.0 / this.capacity * 1.0 <= 1.0 / 3.0 && this.capacity > 8){
                 decrease_capacity();
             }
-            if (this.a[this.size - 1] == n){
-                Object to_remove = this.a[this.size - 1];
-                this.size--;
-                return to_remove;
-            }
-            if (this.a[0] == n){
-                Object to_remove = this.a[0];
-                for (int i = 0; i < this.size - 1; ++i){
-                    this.a[i] = this.a[i + 1];
-                }
-                this.size--;
-                return to_remove;
-            }
-            Object to_remove = null;
-            for (int i = 1; i < this.size - 1; ++i){
-                if (this.a[i] == n){
-                    to_remove = this.a[i];
-                    for (int j = i; j < this.size - 1; ++j){
-                        this.a[j] = this.a[j + 1];
-                    }
-                    break;
-                }
-            }
-            if (to_remove == null){
-                throw new ElementoInexistente("Não é possível remover um elemento que não existe");
+            int to_remove = find(n);
+            for(int i = to_remove; i < this.size - 1; ++i){
+                this.a[i] = this.a[i + 1];
             }
             this.size--;
-            return to_remove;
+            return n;
         }
         
         @Override
@@ -264,32 +205,13 @@ public class Lista_Arranjo {
         }
 
         @Override
-        public Object replaceElement(Object n, Object o) throws ElementoInexistente, EListaVazia{
+        public Object replaceElement(Object n, Object o) throws EListaVazia{
             if (isEmpty()){
                 throw new EListaVazia("Não é possível substituir elementos de uma lista vazia");
             }
-            if (n == this.a[0]){
-                Object replaced = this.a[0];
-                this.a[0] = o;
-                return replaced;
-            }
-            if (n == this.a[this.size - 1]){
-                Object replaced = this.a[this.size - 1];
-                this.a[this.size - 1] = o;
-                return replaced;
-            }
-            Object replaced = null;
-            for (int i = 1; i < this.size - 1; ++i){
-                if (this.a[i] == n){
-                    replaced = this.a[i];
-                    this.a[i] = o;
-                    break;
-                }
-            }
-            if (replaced == null){
-                throw new ElementoInexistente("Não é possível substituir um valor inexistente");
-            }
-            return replaced;
+            int replaced = find(n);
+            this.a[replaced] = o;
+            return n;
         }
     }
 }

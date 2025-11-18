@@ -2,7 +2,6 @@ public class TesteListaLista extends Lista_Lista{
     public static void main(String[] args) {
         try {
             ListaListaLigada lista = new ListaListaLigada();
-
             System.out.println("=== TESTES INICIAIS ===");
             System.out.println("Está vazio? " + lista.isEmpty());
             System.out.println("Tamanho: " + lista.size());
@@ -12,27 +11,29 @@ public class TesteListaLista extends Lista_Lista{
             lista.insertFirst("B");
             lista.insertFirst("A");
             System.out.println("Tamanho após insertFirst: " + lista.size());
-            System.out.println("Primeiro elemento: " + lista.first());
-            System.out.println("Último elemento: " + lista.last());
+            System.out.println("Primeiro elemento: " + lista.first().getValue());
+            System.out.println("Último elemento: " + lista.last().getValue());
 
             System.out.println("\n=== INSERÇÃO EM LAST ===");
             lista.insertLast("D");
             lista.insertLast("E");
-            System.out.println("Novo último elemento: " + lista.last());
+            System.out.println("Novo último elemento: " + lista.last().getValue());
             System.out.println("Tamanho atual: " + lista.size());
 
             System.out.println("\n=== INSERÇÃO APÓS ELEMENTO ESPECÍFICO ===");
-            lista.insertAfter("B", "X");  // após o nó com conteúdo "B"
-            System.out.println("Após 'B': " + lista.after(1));
+            No noB = lista.atRank(1);  // Obtém o nó na posição 1 ("B")
+            No noX = lista.insertAfter(noB, "X");
+            System.out.println("Após 'B': " + lista.after(1).getValue());
             System.out.println("Tamanho atual: " + lista.size());
 
             System.out.println("\n=== REPLACE ELEMENT ===");
-            Object antigo = lista.replaceElement("X", "Y");
+            Object antigo = lista.replaceElement(noX, "Y");
             System.out.println("Substituído '" + antigo + "' por 'Y'");
-            System.out.println("Elemento depois de 'B': " + lista.after(1));
+            System.out.println("Elemento depois de 'B': " + lista.after(1).getValue());
 
             System.out.println("\n=== REMOÇÃO DE ELEMENTO ===");
-            Object removido = lista.remove("Y");
+            No noY = lista.atRank(2);  // Obtém o nó com "Y"
+            Object removido = lista.remove(noY);
             System.out.println("Elemento removido: " + removido);
             System.out.println("Tamanho após remoção: " + lista.size());
 
@@ -44,15 +45,16 @@ public class TesteListaLista extends Lista_Lista{
 
             System.out.println("\n=== TESTE DE REMOÇÕES MÚLTIPLAS ===");
             while (!lista.isEmpty() && lista.size() > 5) {
-                lista.remove("Z");
+                No noZ = lista.last();  // Obtém o último nó
+                lista.remove(noZ);
             }
             System.out.println("Tamanho após remoções: " + lista.size());
 
             System.out.println("\n=== TESTES DE NAVEGAÇÃO ===");
             try {
-                System.out.println("First: " + lista.first());
-                System.out.println("Last: " + lista.last());
-                System.out.println("Elemento após o primeiro: " + lista.after(0));
+                System.out.println("First: " + lista.first().getValue());
+                System.out.println("Last: " + lista.last().getValue());
+                System.out.println("Elemento após o primeiro: " + lista.after(0).getValue());
             } catch (Exception e) {
                 System.out.println("Erro em navegação: " + e.getMessage());
             }
@@ -66,17 +68,18 @@ public class TesteListaLista extends Lista_Lista{
                 System.out.println("OK! Recebida: " + e.getMessage());
             }
 
-            System.out.print("Tentando remover elemento inexistente... ");
+            System.out.print("Tentando acessar elemento antes do primeiro... ");
             try {
-                lista.remove("NÃO EXISTE");
-            } catch (Exception e) {
+                lista.before(0);
+            } catch (EListaIndice e) {
                 System.out.println("OK! Exceção: " + e.getMessage());
             }
 
             System.out.print("Tentando remover de lista vazia... ");
             try {
                 ListaListaLigada vazio = new ListaListaLigada();
-                vazio.remove("QUALQUER COISA");
+                No noVazio = new No();
+                vazio.remove(noVazio);
             } catch (EListaVazia e) {
                 System.out.println("OK! Exceção: " + e.getMessage());
             }
@@ -88,3 +91,4 @@ public class TesteListaLista extends Lista_Lista{
         }
     }
 }
+ 
