@@ -49,7 +49,7 @@ public class Fila_Arranjo {
         
         @Override
         public boolean estaVazia(){
-            return this.primeiro == this.finalFila;
+            return this.tamanho == 0;
         }
 
         @Override
@@ -62,7 +62,7 @@ public class Fila_Arranjo {
 
         @Override
         public void enfileirar(Object o){
-            if (this.tamanho + 1 == this.capacidade){
+            if (this.tamanho  == this.capacidade + 1){
                 aumentar_capacidade();
             }
             this.a[this.finalFila] = o;
@@ -75,12 +75,12 @@ public class Fila_Arranjo {
             if (estaVazia()){
                 throw new EFilaVazia("A fila está vazia");
             }
-            if (this.tamanho * 1.0 / this.capacidade * 1.0 <= 1.0 / 3.0){
-                diminuir_capacidade();
-            }
             Object saindo = this.a[this.primeiro];
             this.primeiro = (this.primeiro + 1) % this.capacidade;
             --this.tamanho;
+            if (this.tamanho * 1.0 / this.capacidade * 1.0 <= 1.0 / 3.0 && this.capacidade > 8){
+                diminuir_capacidade();
+            }
             return saindo;
         }
     }

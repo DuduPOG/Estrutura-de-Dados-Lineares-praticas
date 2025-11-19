@@ -122,12 +122,12 @@ public class testedeque_d {
         Instant inicio = Instant.now();
         Deque_Dupla_Ligacao pp = new Deque_Dupla_Ligacao();
 		System.out.println("inserindo");
-		for(int f = 0; f < 32768; f++){		  
+		for(int f = 0; f < 131072; f++){		  
 		  pp.push_front(f);
           pp.push_back(f);
 		}
 		System.out.println("retirando");
-		for(int f = 0; f < 32768; f++){
+		for(int f = 0; f < 131072; f++){
             pp.pop_front();
             pp.pop_back();
 		}
