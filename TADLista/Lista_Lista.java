@@ -90,17 +90,16 @@ public class Lista_Lista {
             if (p == 0){
                 throw new EListaIndice("Não existe um elemento antes do primeiro elemento");
             }
-            No current = atRank(p);
-            return current.getPrev();
+            return atRank(p).getPrev();
         }
 
         @Override
         public No after(int p) throws EListaIndice, EListaVazia{
-            if (p < 0 || p >= this.size){
-                throw new EListaIndice("Índice inválido");
-            }
             if (isEmpty()){
                 throw new EListaVazia("Lista vazia");
+            }
+            if (p < 0 || p >= this.size){
+                throw new EListaIndice("Índice inválido");
             }
             if (this.size < 2){
                 throw new ElementoInexistente("Esta lista só tem um elemento");
@@ -108,14 +107,16 @@ public class Lista_Lista {
             if (p == this.size - 1){
                 throw new EListaIndice("Não existe um elemento depois do último elemento");
             }
-            No current = atRank(p);
-            return current.getNext();
+            return atRank(p).getNext();
         }
 
         @Override
-        public No insertBefore(No n, Object o) throws EListaVazia{
+        public No insertBefore(No n, Object o) throws EListaVazia, NoInexistente{
             if(isEmpty()){
                 throw new EListaVazia("Lista vazia");
+            }
+            if (n.getPrev() == null || n.getNext() == null){
+                throw new NoInexistente("Este nó não pertence à sequência");
             }
             No toAdd = new No();
             toAdd.setValue(o);
@@ -132,6 +133,9 @@ public class Lista_Lista {
             if(isEmpty()){
                 throw new EListaVazia("Lista vazia");
             }
+            if (n.getPrev() == null || n.getNext() == null){
+                throw new NoInexistente("Este nó não pertence à sequência");
+            }
             No toAdd = new No();
             toAdd.setValue(o);
             toAdd.setPrev(n);
@@ -143,7 +147,7 @@ public class Lista_Lista {
         }
         
         @Override
-        public void swapElements(No n, No q) throws EListaVazia{
+        public void swapElements(No n, No q) throws EListaVazia, NoInexistente{
             if (this.size < 2){
                 throw new EListaVazia("Não é possível trocar elementos de uma lista com menos de 2 elementos ou vazia");
             }
@@ -153,7 +157,7 @@ public class Lista_Lista {
         }
         
         @Override
-        public Object remove(No n) throws EListaVazia{
+        public Object remove(No n) throws EListaVazia, NoInexistente{
             if (isEmpty()){
                 throw new EListaVazia("Não é possível remover um elemento de uma lista vazia");
             }
@@ -189,7 +193,10 @@ public class Lista_Lista {
         @Override
         public Object replaceElement(No n, Object o) throws ElementoInexistente, EListaVazia{
             if (isEmpty()){
-                throw new EListaVazia("Não é possível substituir elementos de uma lista vazia");
+                throw new EListaVazia("Não é possível substituir um nó de uma sequência vazia");
+            }
+            if (n.getPrev() == null || n.getNext() == null){
+                throw new NoInexistente("Este nó não pertence à sequência");
             }
             Object replaced = n.getValue();
             n.setValue(o);

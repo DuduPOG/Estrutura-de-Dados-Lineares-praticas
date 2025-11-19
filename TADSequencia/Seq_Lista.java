@@ -20,7 +20,7 @@ public class Seq_Lista {
         public No find(Object o){
             No current = this.head.getNext();
             No other_current = this.tail.getPrev();
-            while (current != this.tail && other_current != this.head) {
+            while (current != other_current && current.getPrev() != other_current) {
                 if (current.getValue() == o){
                     return current;
                 }
@@ -29,6 +29,11 @@ public class Seq_Lista {
                 }
                 current = current.getNext();
                 other_current = other_current.getPrev();
+            }
+            if (current == other_current) {
+                if (current.getValue() == o) {
+                    return current;
+                }
             }
             return null;
         }
@@ -60,19 +65,22 @@ public class Seq_Lista {
             No other_current = this.tail.getPrev();
             int index = 0;
             int other_index = this.size - 1;
-            while ((current != no && current != this.tail) && (other_current != no && other_current != this.head)) { 
+            while (current != other_current && current.getPrev() != other_current) {
+                if (current == no){
+                    return index;
+                }
+                if (other_current == no) {
+                    return other_index;
+                }
                 current = current.getNext();
                 other_current = other_current.getPrev();
                 index++;
                 other_index--;
             }
-            if (current == this.tail && other_current == this.head){
-                throw new NoInexistente("Esse nó não existe na sequência");
-            }
             if (current == no){
                 return index;
             }
-            return other_index;
+            throw new NoInexistente("Esse nó não existe na sequência");
         }
 
         @Override
@@ -117,8 +125,11 @@ public class Seq_Lista {
             if (isEmpty()){
                 throw new ESeqVazia("Sequência vazia");
             }
-            if (no == this.head.getNext()){
-                throw new ESeqIndice("Não existe um nó antes do primeiro elemento");
+            if (no == this.head.getPrev()){
+                throw new NoInexistente("Não existe um nó antes do primeiro elemento");
+            }
+            if (no.getPrev() == null) {
+                throw new NoInexistente("Este nó não pertence à sequência");
             }
             return no.getPrev();
         }
@@ -131,13 +142,19 @@ public class Seq_Lista {
             if (no == this.tail.getPrev()){
                 throw new ESeqIndice("Não existe um nó depois do último elemento");
             }
+            if (no.getNext() == null) {
+                throw new NoInexistente("Este nó não pertence à sequência");
+            }
             return no.getNext();
         }
 
         @Override
-        public No insertBefore(No no, Object o) throws ESeqVazia{
+        public No insertBefore(No no, Object o) throws ESeqVazia, NoInexistente{
             if(isEmpty()){
                 throw new ESeqVazia("Sequência vazia");
+            }
+            if (no.getPrev() == null || no.getNext() == null){
+                throw new NoInexistente("Este nó não pertence à sequência");
             }
             No toAdd = new No();
             toAdd.setValue(o);
@@ -150,9 +167,12 @@ public class Seq_Lista {
         }
 
         @Override
-        public No insertAfter(No no, Object o) throws ESeqVazia{
+        public No insertAfter(No no, Object o) throws ESeqVazia, NoInexistente{
             if(isEmpty()){
                 throw new ESeqVazia("Sequência vazia");
+            }
+            if (no.getPrev() == null || no.getNext() == null){
+                throw new NoInexistente("Este nó não pertence à sequência");
             }
             No toAdd = new No();
             toAdd.setValue(o);
@@ -212,7 +232,7 @@ public class Seq_Lista {
             if(isEmpty()){
                 throw new ESeqVazia("Não é possível mostrar um elemento de uma sequência vazia");
             }
-            if(index < 0 || index > this.size){
+            if(index < 0 || index >= this.size){
                 throw new ESeqIndice("Índice inválido");
             }
             return atRank(index).getValue();
@@ -222,6 +242,11 @@ public class Seq_Lista {
         public void insertAtRank(int index, Object o) throws ESeqIndice{
             if(index < 0 || index > this.size){
                 throw new ESeqIndice("Índice inválido");
+            }
+            if (index == this.size){
+                insertLast(o);
+                this.size++;
+                return;
             }
             No to_add = new No();
             to_add.setValue(o);
@@ -266,6 +291,9 @@ public class Seq_Lista {
         public Object replaceElement(No no, Object o) throws NoInexistente, ESeqVazia{
             if (isEmpty()){
                 throw new ESeqVazia("Não é possível substituir um nó de uma sequência vazia");
+            }
+            if (no.getPrev() == null || no.getNext() == null){
+                throw new NoInexistente("Este nó não pertence à sequência");
             }
             Object replaced = no.getValue();
             no.setValue(o);

@@ -24,9 +24,9 @@ public interface Lista_Interface {
 
     public abstract void insertLast(Object o);
 
-    public abstract No insertBefore(No n, Object o) throws EListaVazia;
+    public abstract No insertBefore(No n, Object o) throws EListaVazia, NoInexistente;
 
-    public abstract No insertAfter(No n, Object o) throws EListaVazia;
+    public abstract No insertAfter(No n, Object o) throws EListaVazia, NoInexistente;
 
     public abstract Object replaceElement(No n, Object o) throws EListaIndice, EListaVazia;
 

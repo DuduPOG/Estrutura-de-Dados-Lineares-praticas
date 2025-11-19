@@ -38,15 +38,10 @@ public class Lista_Arranjo {
         }
 
         public int find(Object o) throws ElementoInexistente{
-            int j = this.size - 1;
-            for(int i = 0; i <= this.size / 2 && j >= this.size / 2; ++i){
+            for(int i = 0; i < this.size; ++i){
                 if (this.a[i] == o){
                     return i;
                 }
-                if (this.a[j] == o){
-                    return j;
-                }
-                j--;
             }
             throw new ElementoInexistente("Não existe esse elemento na lista");
         }
@@ -131,7 +126,7 @@ public class Lista_Arranjo {
                 increase_capacity();
             }
             int index = find(n);
-            for(int i = this.size - 1; i > index; --i){
+            for(int i = this.size; i > index; --i){
                 this.a[i] = this.a[i - 1];
             }
             this.a[index] = o;
@@ -148,7 +143,7 @@ public class Lista_Arranjo {
                 increase_capacity();
             }
             int index = find(n);
-            for(int i = this.size - 1; i > index; --i){
+            for(int i = this.size; i > index + 1; --i){
                 this.a[i] = this.a[i - 1];
             }
             this.a[index + 1] = o;
@@ -172,14 +167,14 @@ public class Lista_Arranjo {
             if (isEmpty()){
                 throw new EListaVazia("Não é possível remover um elemento de uma lista vazia");
             }
-            if (this.size * 1.0 / this.capacity * 1.0 <= 1.0 / 3.0 && this.capacity > 8){
-                decrease_capacity();
-            }
             int to_remove = find(n);
             for(int i = to_remove; i < this.size - 1; ++i){
                 this.a[i] = this.a[i + 1];
             }
             this.size--;
+            if (this.size * 1.0 / this.capacity * 1.0 <= 1.0 / 3.0 && this.capacity > 8){
+                decrease_capacity();
+            }
             return n;
         }
         
