@@ -1,31 +1,32 @@
 public interface Array_Interface {
-    public int size();
+    public abstract int size();
     
-    public boolean isEmpty();
+    public abstract boolean isEmpty();
 
-    public boolean isFirst(Object n);
+    public abstract boolean isFirst(Object n);
 
-    public boolean isLast(Object n);
+    public abstract boolean isLast(Object n);
 
-    public Object first() throws EListaVazia;
+    public abstract Object first() throws EListaVazia;
 
-    public Object last() throws EListaVazia;
+    public abstract Object last() throws EListaVazia;
 
-    public Object before(int p) throws EListaIndice, EListaVazia;
+    public abstract Object before(int p) throws EListaIndice, EListaVazia;
 
-    public Object after(int p) throws EListaIndice, EListaVazia;
+    public abstract Object after(int p) throws EListaIndice, EListaVazia;
     
-    public void swapElements(Object n, Object q) throws EListaVazia;
+    public abstract void swapElements(Object n, Object q) throws EListaVazia;
     
-    public Object remove(Object n) throws EListaVazia, ElementoInexistente;
+    public abstract Object remove(Object n) throws EListaVazia, ElementoInexistente;
     
-    public void insertFirst(Object o);
+    public abstract void insertFirst(Object o);
 
-    public void insertLast(Object o);
+    public abstract void insertLast(Object o);
 
-    public int insertBefore(Object n, Object o) throws EListaVazia;
+    public abstract int insertBefore(Object n, Object o) throws EListaVazia;
 
-    public int insertAfter(Object n, Object o) throws EListaVazia;
+    public abstract int insertAfter(Object n, Object o) throws EListaVazia;
 
-    public Object replaceElement(Object n, Object o) throws EListaIndice, EListaVazia;
+    public abstract Object replaceElement(Object n, Object o) throws EListaIndice, EListaVazia;
+
 }

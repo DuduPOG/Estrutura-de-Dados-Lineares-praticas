@@ -1,33 +1,33 @@
 public interface Lista_Interface {
 
-    public int size();
+    public abstract int size();
     
-    public boolean isEmpty();
+    public abstract boolean isEmpty();
 
-    public boolean isFirst(No no);
+    public abstract boolean isFirst(No no);
 
-    public boolean isLast(No no);
+    public abstract boolean isLast(No no);
 
-    public No first() throws EListaVazia;
+    public abstract No first() throws EListaVazia;
 
-    public No last() throws EListaVazia;
+    public abstract No last() throws EListaVazia;
 
-    public No before(int index) throws EListaIndice, EListaVazia;
+    public abstract No before(int index) throws EListaIndice, EListaVazia;
 
-    public No after(int index) throws EListaIndice, EListaVazia;
+    public abstract No after(int index) throws EListaIndice, EListaVazia;
     
-    public void swapElements(No n, No q) throws ElementoInexistente, EListaVazia;
+    public abstract void swapElements(No n, No q) throws ElementoInexistente, EListaVazia;
     
-    public Object remove(No n) throws EListaVazia, ElementoInexistente;
+    public abstract Object remove(No n) throws EListaVazia, ElementoInexistente;
     
-    public void insertFirst(Object o);
+    public abstract void insertFirst(Object o);
 
-    public void insertLast(Object o);
+    public abstract void insertLast(Object o);
 
-    public No insertBefore(No n, Object o) throws EListaVazia;
+    public abstract No insertBefore(No n, Object o) throws EListaVazia;
 
-    public No insertAfter(No n, Object o) throws EListaVazia;
+    public abstract No insertAfter(No n, Object o) throws EListaVazia;
 
-    public Object replaceElement(No n, Object o) throws EListaIndice, EListaVazia;
+    public abstract Object replaceElement(No n, Object o) throws EListaIndice, EListaVazia;
 
 }
