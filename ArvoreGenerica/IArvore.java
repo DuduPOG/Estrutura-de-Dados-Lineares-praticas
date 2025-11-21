@@ -1,7 +1,6 @@
 import java.util.Iterator;
 
-public interface IArvore {
-
+public interface IArvore{
     int size();
 
     int height();

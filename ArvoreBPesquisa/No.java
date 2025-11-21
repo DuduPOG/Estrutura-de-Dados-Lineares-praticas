@@ -1,29 +1,29 @@
-﻿public class Node {
-    private Node pai;
-    private Node FE;
+public class No {
+    private No pai;
+    private No FE;
     private Object element;
-    private Node FD;
+    private No FD;
 
-    public Node(){
+    public No(){
         this.pai = null;
         this.FE = null;
         this.element = null;
         this.FD = null;
     }
 
-    public void setPai(Node n){
+    public void setPai(No n){
         this.pai = n;
     }
 
-    public void setFE(Node n){
+    public void setFE(No n){
         this.FE = n;
     }
 
-    public void setElement(Node n){
+    public void setElement(No n){
         this.element = n;
     }
 
-    public void setFD(Node n){
+    public void setFD(No n){
         this.FD = n;
     }
 

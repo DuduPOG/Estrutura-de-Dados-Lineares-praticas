@@ -1,5 +1,5 @@
 public class ArvoreBP {
-    public static class EArvoreBP extends Node implements IArvore{
+    public static class EArvoreBP extends No implements IArvore{
         
     }
 }
