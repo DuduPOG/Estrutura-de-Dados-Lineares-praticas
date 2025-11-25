@@ -62,7 +62,7 @@ public class Fila_Arranjo {
 
         @Override
         public void enfileirar(Object o){
-            if (this.tamanho  == this.capacidade + 1){
+            if (this.tamanho  == this.capacidade - 1){
                 aumentar_capacidade();
             }
             this.a[this.finalFila] = o;
