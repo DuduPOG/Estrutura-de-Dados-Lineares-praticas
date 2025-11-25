@@ -4,7 +4,7 @@ public interface IArvore {
 
     int size();
 
-    int height();
+    int altura(No n);
 
     boolean isEmpty();
 
@@ -12,19 +12,19 @@ public interface IArvore {
 
     Iterator nos();
 
-    No root();
+    No raiz();
 
-    No parent(No no);
+    No pai(No no);
 
     Iterator children(No no);
 
-    boolean isInternal();
+    boolean EInterno(No n);
 
-    boolean isExternal();
+    boolean EExterno(No n);
 
-    boolean isRoot();
+    boolean ERaiz(No n);
 
-    int depth(No no);
+    int profundidade(No no);
 
     Object replace(No no, Object o);
 }

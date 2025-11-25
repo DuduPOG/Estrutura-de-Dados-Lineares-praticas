@@ -3,7 +3,7 @@ import java.util.Iterator;
 public interface IArvore{
     int size();
 
-    int height();
+    int altura(No no);
 
     boolean isEmpty();
 
@@ -11,19 +11,19 @@ public interface IArvore{
 
     Iterator nos();
 
-    No root();
+    No raiz();
 
-    No parent(No no);
+    No pai(No no);
 
-    Iterator children(No no);
+    Iterator Filhos(No no);
 
-    boolean isInternal();
+    boolean EInterno(No no);
 
-    boolean isExternal();
+    boolean EExterno(No no);
 
-    boolean isRoot();
+    boolean ERaiz(No no);
 
-    int depth(No no);
+    int profundidade(No no);
 
     Object replace(No no, Object o);
 }

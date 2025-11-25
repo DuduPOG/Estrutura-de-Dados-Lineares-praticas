@@ -1,67 +1,75 @@
 public class ArvoreG{
-    public static class Arvore extends No implements InterfaceArvore{
-        private No pai;
+    public static class Arvore extends No implements IArvore{
+        private No raiz;
         private int size;
         private Object element;
-        private Object filhos;
+        private Object[] filhos;
 
         public Arvore(){
-            this.pai = null;
             this.size = 0;
             this.element = null;
             this.filhos = null;
         }
 
+        @Override
         public int size(){
             return this.size;
         }
 
-        public boolean EInterno(){
-            if (this.filhos != null){
-                return true;
-            }
-            return false;
+        @Override
+        public boolean isEmpty(){
+            return this.size == 0;
         }
 
-        public boolean EExterno(){
-            if (this.filhos == null){
-                return true;
-            }
-            return false;
+        @Override
+        public boolean EInterno(No no){
+            return this.filhos != null;
         }
 
-        public boolean ERaiz(){
-            if (this.pai == null){
-                return true;
-            }
-            return false;
+        @Override
+        public boolean EExterno(No no){
+            return this.filhos == null;
         }
 
+        @Override
+        public boolean ERaiz(No no){
+            return this.pai == null;
+        }
+
+        @Override
         public No pai(No no){
-            return no.getPai();
+            return this.pai;
         }
 
         public Object filhos(No no){
-            return no.getFilhos();
+            return this.filhos;
         }
 
+        @Override
         public int profundidade(No no){
-            if (ERaiz()){
+            if (ERaiz(no)){
                 return 0;
             }
             return 1 + profundidade(pai(no));
         }
 
+        @Override
         public int altura(No no){
-            if (EExterno()){
+            if (EExterno(no)){
                 return 0;
             }
             int h = 0;
-            foreach (object elements in filhos(no));
-            {
-                h = System.Math.Max(h, altura(no));
+            for (Object o : filhos) {
+                h = Math.max(h, altura(o));
             }
             return 1 + h;
+        }
+
+        @Override
+        public Object replace(No no, Object o){
+            Object oldElement = this.element;
+            this.element = o;
+            return oldElement;
         }
     }
 }

@@ -1,24 +1,24 @@
 public class No{
     private No pai;
     private Object element;
-    private No Filhos;
+    private Object[] Filhos;
 
     public No(){
         this.pai = null;
         this.element = null;
-        this.Filhos = null;
+        this.Filhos = new Object[8];
     }
 
-    public void setPai(No n){
-        this.pai = n;
+    public void setPai(No no){
+        this.pai = no;
     }
 
-    public void setElement(No n){
-        this.element = n;
+    public void setElement(Object o){
+        this.element = o;
     }
 
-    public void setFilhos(No n){
-        this.Filhos = n;
+    public void setFilho(No no, int index){
+        this.Filhos[index] = no;
     }
 
     public No getPai(){
@@ -29,7 +29,7 @@ public class No{
         return this.element;
     }
 
-    public No getFilhos(){
+    public Object getFilhos(){
         return this.Filhos;
     }
 }
