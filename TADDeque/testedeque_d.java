@@ -3,7 +3,7 @@ import java.time.Instant;
 
 public class testedeque_d {
 
-    public static class Deque_Dupla_Ligacao implements Deque {
+    public static class Deque_Dupla_Ligacao implements DequeInterface {
         private No head;
         private No tail;
         private int size;

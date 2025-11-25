@@ -2,7 +2,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 public class testedeque_s {
-    public static class Deque_Simples_Ligacao implements Deque {
+    public static class Deque_Simples_Ligacao implements DequeInterface {
         private No head;
         private No tail;
         private int size;
