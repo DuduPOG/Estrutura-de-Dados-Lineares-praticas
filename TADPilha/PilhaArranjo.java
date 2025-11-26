@@ -64,7 +64,7 @@ public class PilhaArranjo implements PilhaInterface {
         if (this.size * 1.0 / this.capacity * 1.0 <= 1.0 / 3.0){
             decreaseCapacity();
         }
-        this.size--;
-        return this.pilha[this.topo--];
+        this.topo--;
+        return toRemove;
     }
 }
