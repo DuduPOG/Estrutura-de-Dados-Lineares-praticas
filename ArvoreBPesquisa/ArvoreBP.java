@@ -2,316 +2,257 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ArvoreBP {
-    public static class ArvoreBinariaPesquisa extends No implements IArvore{
-        private No raiz;
-        private int tamanho;
+    private No raiz;
+    private int tamanho;
 
-        public ArvoreBinariaPesquisa() {
-            this.raiz = null;
-            this.tamanho = 0;
+    public ArvoreBP() {
+        this.raiz = null;
+        this.tamanho = 0;
+    }
+
+    public class No {
+        private No pai;
+        private int element;
+        private No FE;
+        private No FD;
+
+        public No() {
+            this.pai = null;
+            this.element = 0;
+            this.FE = null;
+            this.FD = null;
         }
 
-        @Override
-        public No raiz() {
-            return this.raiz;
+        public No(No pai, int element) {
+            this.pai = pai;
+            this.element = element;
+            this.FE = null;
+            this.FD = null;
         }
 
-        @Override
-        public int size() {
-            return this.tamanho;
+        public int getElement() {
+            return this.element;
         }
 
-        @Override
-        public boolean isEmpty() {
-            return raiz == null;
+        public void setElement(int element) {
+            this.element = element;
         }
 
-        @Override
-        public No pai(No n) {
-            return n.pai;
+        public No pai() {
+            return this.pai;
         }
 
-        @Override
-        public boolean ERaiz(No n) {
-            return n == raiz;
+        public void setPai(No pai) {
+            this.pai = pai;
         }
 
-        @Override
-        public int profunidade(No n) {
-            if (n == raiz){
-                return 0;
-            }
-            return 1 + depth(n.parent);
+        public boolean hasLeft() {
+            return this.FE != null;
         }
 
-        @Override
-        public int altura(No n) {
-            if (n == null || n.EExterno()){
-                return 0;
-            }
-            return 1 + Math.max(height(n.left), height(n.right));
+        public boolean hasRight() {
+            return this.FD != null;
         }
 
-        public No leftChild(No n) {
-            return n.left;
+        public No getFE() {
+            return this.FE;
         }
 
-        public No rightChild(No n) {
-            return n.right;
+        public void setFE(No fe) {
+            this.FE = fe;
         }
 
-        public boolean hasLeft(No n) {
-            return n.hasLeft();
+        public No getFD() {
+            return this.FD;
         }
 
-        public boolean hasRight(No n) {
-            return n.hasRight();
+        public void setFD(No fd) {
+            this.FD = fd;
         }
 
-
-        public No insert(int key) {
-
-            if (raiz == null) {
-                raiz = new No(null, key);
-                tamanho++;
-                return raiz;
+        public int numFilhos() {
+            int qtd = 0;
+            if (this.FE != null){
+                qtd++;
             }
-
-            No atual = raiz;
-            No pai = null;
-
-            while (atual != null) {
-                pai = atual;
-                int v = (int) atual.element;
-
-                if (key < v){
-                    atual = atual.left;
-                }else{
-                    atual = atual.right;
-                }
+            if (this.FD != null){
+                qtd++;
             }
-
-            No novo = new No(pai, key);
-
-            if (key < (int) pai.element){
-                pai.left = novo;
-            }else{
-                pai.right = novo;
-            }
-            tamanho++;
-            return novo;
+            return qtd;
         }
 
-        public void remove(int key) {
-            No pai = null;
-            No atual = raiz;
-
-            while (atual != null && (int) atual.element != key) {
-                pai = atual;
-                if (key < (int) atual.element){
-                    atual = atual.left;
-                }else{
-                    atual = atual.right;
-                }
+        public Iterator<No> filhos() {
+            ArrayList<No> filhos = new ArrayList<>();
+            if (this.FE != null){
+            filhos.add(this.FE); 
+            } 
+            if (this.FD != null){
+                filhos.add(this.FD);
             }
-
-            if (atual == null){
-                return;
-            }
-
-            if (atual.left == null && atual.right == null) {
-
-                if (pai == null) {
-                    raiz = null;
-                }
-                else if (pai.left == atual){
-                    pai.left = null;
-                }else{
-                    pai.right = null;
-                }
-                tamanho--;
-                return;
-            }
-
-            if (atual.left == null || atual.right == null) {
-
-                Node filho = (atual.left != null) ? atual.left : atual.right;
-
-                if (pai == null){
-                    raiz = filho;
-                }else if (pai.left == atual){
-                    pai.left = filho;
-                }else{
-                    pai.right = filho;
-                }
-                filho.parent = pai;
-                tamanho--;
-                return;
-            }
-
-            Node pSucc = atual;
-            Node succ = atual.right;
-
-            while (succ.left != null) {
-                pSucc = succ;
-                succ = succ.left;
-            }
-
-            atual.element = succ.element;
-
-            if (pSucc.left == succ) {
-                pSucc.left = succ.right;
-                if (succ.right != null) succ.right.parent = pSucc;
-            } else {
-                pSucc.right = succ.right;
-                if (succ.right != null) succ.right.parent = pSucc;
-            }
-            tamanho--;
-        }
-
-        public void preOrder(No n) {
-            if (n == null){
-                return;
-            }
-            System.out.print(n.element + " ");
-            preOrder(n.left);
-            preOrder(n.right);
-        }
-
-        public void inOrder(No n) {
-            if (n == null){
-                return;
-            }
-            inOrder(n.left);
-            System.out.print(n.element + " ");
-            inOrder(n.right);
-        }
-
-        public void postOrder(No n) {
-            if (n == null){
-                return;
-            }
-            postOrder(n.left);
-            postOrder(n.right);
-            System.out.print(n.element + " ");
-        }
-
-        public Iterator<No> nodes() {
-            ArrayList<No> lista = new ArrayList<>();
-            preOrderList(raiz, lista);
-            return lista.iterator();
-        }
-
-        private void preOrderList(No n, ArrayList<No> lista) {
-            if (n == null){
-                return;
-            }
-            lista.add(n);
-            preOrderList(n.left, lista);
-            preOrderList(n.right, lista);
-        }
-
-        public Iterator<Object> elements() {
-            ArrayList<Object> elems = new ArrayList<>();
-            Iterator<Node> it = nodes();
-            while (it.hasNext()){
-                elems.add(it.next().element);
-            }
-            return elems.iterator();
-        }
-
-
-        public void desenharArvore() {
-            int h = altura(raiz);
-            int largura = (int) Math.pow(2, h + 1) - 1;
-
-            String[][] mat = new String[h + 1][largura];
-
-            for (int i = 0; i <= h; i++){
-                for (int j = 0; j < largura; j++){
-                    mat[i][j] = " ";
-                }
-            }
-
-            preencherMatriz(raiz, mat, 0, 0, largura - 1);
-
-            for (int i = 0; i <= h; i++) {
-                for (int j = 0; j < largura; j++){
-                    System.out.print(mat[i][j]);
-                }
-                System.out.println();
-            }
-        }
-
-        private void preencherMatriz(No n, String[][] mat, int linha, int esq, int dir) {
-            if (n == null){
-                return;
-            }
-            int meio = (esq + dir) / 2;
-            mat[linha][meio] = String.valueOf(n.element);
-
-            preencherMatriz(n.left, mat, linha + 1, esq, meio - 1);
-            preencherMatriz(n.right, mat, linha + 1, meio + 1, dir);
-        }
-
-
-        public class No {
-
-            private No pai;
-            private Object element;
-            private No FE;
-            private No FD;
-
-            public No(No pai, Object element) {
-                this.pai = pai;
-                this.element = element;
-            }
-
-            public Object getElement() {
-                return element;
-            }
-
-            public No pai() {
-                return this.pai;
-            }
-
-            public boolean hasLeft() {
-                return this.FE != null;
-            }
-
-            public boolean hasRight() {
-                return this.FD != null;
-            }
-
-            public boolean EExterno() {
-                return this == null && right == null;
-            }
-
-            public boolean EInterno() {
-                return !(EExterno());
-            }
-
-            public int childrenNumber() {
-                int c = 0;
-                if (left != null){
-                    c++;
-                }
-                if (right != null){
-                    c++;
-                }
-                return c;
-            }
-
-            public Iterator<No> children() {
-                ArrayList<No> f = new ArrayList<>();
-                if (left != null){
-                    f.add(left);
-                }
-                if (right != null){
-                    f.add(right);
-                }
-                return f.iterator();
-            }
+            return filhos.iterator();
         }
     }
+
+    public No raiz() {
+        return this.raiz;
+    }
+
+    public int size() {
+        return this.tamanho;
+    }
+
+    public boolean isEmpty() {
+        return raiz == null;
+    }
+
+    public No pai(No no) {
+        return no.pai();
+    }
+
+    public boolean ERaiz(No no) {
+        return no == this.raiz;
+    }
+
+    public No getFE(No no) {
+        return no.getFE();
+    }
+
+    public No getFD(No no) {
+        return no.getFD();
+    }
+
+    public boolean hasLeft(No no) {
+        return no.hasLeft();
+    }
+
+    public boolean hasRight(No no) {
+        return no.hasRight();
+    }
+
+    public int profundidade(No no) {
+        if (no == raiz) {
+            return 0;
+        }
+        return 1 + profundidade(no.pai());
+    }
+
+    public int altura(No no) {
+        if (no == null) return 0;
+        return 1 + Math.max(altura(no.getFE()), altura(no.getFD()));
+    }
+
+    public No insert(int chave) {
+        if (raiz == null) {
+            raiz = new No(null, chave);
+            tamanho++;
+            return raiz;
+        }
+
+        No atual = raiz;
+        No pai = null;
+
+        while (atual != null) {
+            pai = atual;
+            if (chave < atual.getElement()) {
+                atual = atual.getFE();
+            } else {
+                atual = atual.getFD();
+            }
+        }
+
+        No novo = new No(pai, chave);
+        if (chave < pai.getElement()) {
+            pai.setFE(novo);
+        } else {
+            pai.setFD(novo);
+        }
+        tamanho++;
+        return novo;
+    }
+
+    public void emOrdem(No no) {
+        if (no == null) return;
+        emOrdem(no.getFE());
+        System.out.print(no.getElement() + " ");
+        emOrdem(no.getFD());
+    }
+
+    public void desenharArvore() {
+        int h = altura(raiz);
+        int largura = (int) Math.pow(2, h + 1) - 1;
+
+        String[][] mat = new String[h + 1][largura];
+        for (int i = 0; i <= h; i++) {
+            for (int j = 0; j < largura; j++) {
+                mat[i][j] = " ";
+            }
+        }
+
+        preencherMatriz(raiz, mat, 0, 0, largura - 1);
+
+        for (int i = 0; i <= h; i++) {
+            for (int j = 0; j < largura; j++) {
+                System.out.print(mat[i][j]);
+            }
+            System.out.println();
+        }
+    }
+
+    private void preencherMatriz(No no, String[][] mat, int linha, int esq, int dir) {
+        if (no == null) return;
+        int meio = (esq + dir) / 2;
+        mat[linha][meio] = String.valueOf(no.getElement());
+
+        preencherMatriz(no.getFE(), mat, linha + 1, esq, meio - 1);
+        preencherMatriz(no.getFD(), mat, linha + 1, meio + 1, dir);
+    }
+
+    public void remove(int chave) {
+        raiz = removerRec(raiz, chave);
+    }
+
+    private No removerRec(No no, int chave) {
+        if (no == null) return null;
+
+        if (chave < no.getElement()) {
+            no.setFE(removerRec(no.getFE(), chave));
+        } else if (chave > no.getElement()) {
+            no.setFD(removerRec(no.getFD(), chave));
+        } else {
+            if (no.getFE() == null) return no.getFD();
+            if (no.getFD() == null) return no.getFE();
+            
+            No temp = no.getFD();
+            while (temp.getFE() != null) temp = temp.getFE();
+            no.setElement(temp.getElement());
+            no.setFD(removerRec(no.getFD(), temp.getElement()));
+        }
+        tamanho--;
+        return no;
+    }
+
+    public Iterator<No> nos() {
+        ArrayList<No> lista = new ArrayList<>();
+        preOrderList(raiz, lista);
+        return lista.iterator();
+    }
+
+    private void preOrderList(No no, ArrayList<No> lista) {
+        if (no == null){
+            return;
+        }
+        lista.add(no);
+        preOrderList(no.getFE(), lista);
+        preOrderList(no.getFD(), lista);
+    }
+
+    public Iterator<Object> elements() {
+        ArrayList<Object> elems = new ArrayList<>();
+        Iterator<No> it = nos();
+        while (it.hasNext()) {
+            elems.add(it.next().getElement());
+        }
+        return elems.iterator();
+    }
 }
+ 
