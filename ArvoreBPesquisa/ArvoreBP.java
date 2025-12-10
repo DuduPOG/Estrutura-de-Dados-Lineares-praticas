@@ -102,7 +102,7 @@ public class ArvoreBP {
     }
 
     public boolean isEmpty() {
-        return raiz == null;
+        return this.raiz == null;
     }
 
     public No pai(No no) {
@@ -130,7 +130,7 @@ public class ArvoreBP {
     }
 
     public int profundidade(No no) {
-        if (no == raiz) {
+        if (no == this.raiz) {
             return 0;
         }
         return 1 + profundidade(no.pai());
@@ -142,13 +142,13 @@ public class ArvoreBP {
     }
 
     public No insert(int chave) {
-        if (raiz == null) {
-            raiz = new No(null, chave);
-            tamanho++;
-            return raiz;
+        if (this.raiz == null) {
+            this.raiz = new No(null, chave);
+            this.tamanho++;
+            return this.raiz;
         }
 
-        No atual = raiz;
+        No atual = this.raiz;
         No pai = null;
 
         while (atual != null) {
@@ -166,7 +166,7 @@ public class ArvoreBP {
         } else {
             pai.setFD(novo);
         }
-        tamanho++;
+        this.tamanho++;
         return novo;
     }
 
@@ -197,7 +197,7 @@ public class ArvoreBP {
     }
 
     public void desenharArvore() {
-        int h = altura(raiz);
+        int h = altura(this.raiz);
         int largura = (int) Math.pow(2, h + 1) - 1;
 
         String[][] mat = new String[h + 1][largura];
@@ -207,7 +207,7 @@ public class ArvoreBP {
             }
         }
 
-        preencherMatriz(raiz, mat, 0, 0, largura - 1);
+        preencherMatriz(this.raiz, mat, 0, 0, largura - 1);
 
         for (int i = 0; i <= h; i++) {
             for (int j = 0; j < largura; j++) {
@@ -218,7 +218,9 @@ public class ArvoreBP {
     }
 
     private void preencherMatriz(No no, String[][] mat, int linha, int esq, int dir) {
-        if (no == null) return;
+        if (no == null){
+            return;
+        }
         int meio = (esq + dir) / 2;
         mat[linha][meio] = String.valueOf(no.getElement());
 
@@ -227,7 +229,7 @@ public class ArvoreBP {
     }
 
     public void remove(int chave) {
-        raiz = removerRec(raiz, chave);
+        this.raiz = removerRec(raiz, chave);
     }
 
     private No removerRec(No no, int chave) {
