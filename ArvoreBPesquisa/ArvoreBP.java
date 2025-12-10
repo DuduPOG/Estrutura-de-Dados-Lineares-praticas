@@ -170,11 +170,30 @@ public class ArvoreBP {
         return novo;
     }
 
+    public void preOrdem(No no) {
+        if (no == null){
+            return;
+        }
+        System.out.print(no.getElement() + " ");
+        preOrdem(no.getFE());
+        preOrdem(no.getFD());
+    }
     public void emOrdem(No no) {
-        if (no == null) return;
+        if (no == null){
+            return;
+        }
         emOrdem(no.getFE());
         System.out.print(no.getElement() + " ");
         emOrdem(no.getFD());
+    }
+    
+    public void posOrdem(No no) {
+        if (no == null){
+            return;
+        }
+        posOrdem(no.getFE());
+        posOrdem(no.getFD());
+        System.out.print(no.getElement() + " ");
     }
 
     public void desenharArvore() {
@@ -212,23 +231,46 @@ public class ArvoreBP {
     }
 
     private No removerRec(No no, int chave) {
-        if (no == null) return null;
+        if (no == null){
+            return null;
+        }
 
         if (chave < no.getElement()) {
             no.setFE(removerRec(no.getFE(), chave));
+
         } else if (chave > no.getElement()) {
             no.setFD(removerRec(no.getFD(), chave));
-        } else {
-            if (no.getFE() == null) return no.getFD();
-            if (no.getFD() == null) return no.getFE();
+        }else {
+            if (no.getFE() == null || no.getFD() == null) {
+                tamanho--;
+            }
+            
+            if (no.getFE() == null){
+                return no.getFD();
+            }
+            if (no.getFD() == null){
+                return no.getFE();
+            }
             
             No temp = no.getFD();
-            while (temp.getFE() != null) temp = temp.getFE();
+
+            while (temp.getFE() != null){
+                temp = temp.getFE();
+            }
+
             no.setElement(temp.getElement());
             no.setFD(removerRec(no.getFD(), temp.getElement()));
         }
-        tamanho--;
         return no;
+    }
+
+    private void preOrderList(No no, ArrayList<No> lista) {
+        if (no == null){
+            return;
+        } 
+        lista.add(no);
+        preOrderList(no.getFE(), lista);
+        preOrderList(no.getFD(), lista);
     }
 
     public Iterator<No> nos() {
@@ -237,20 +279,11 @@ public class ArvoreBP {
         return lista.iterator();
     }
 
-    private void preOrderList(No no, ArrayList<No> lista) {
-        if (no == null){
-            return;
-        }
-        lista.add(no);
-        preOrderList(no.getFE(), lista);
-        preOrderList(no.getFD(), lista);
-    }
-
-    public Iterator<Object> elements() {
+    public Iterator<Object> elementos() {
         ArrayList<Object> elems = new ArrayList<>();
-        Iterator<No> it = nos();
-        while (it.hasNext()) {
-            elems.add(it.next().getElement());
+        Iterator<No> iterador = nos();
+        while (iterador.hasNext()) {
+            elems.add(iterador.next().getElement());
         }
         return elems.iterator();
     }

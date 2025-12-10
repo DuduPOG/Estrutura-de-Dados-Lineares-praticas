@@ -7,7 +7,6 @@ public class Teste extends ArvoreBP {
 
         System.out.println("Iniciando testes da Árvore Binária de Pesquisa...\n");
 
-        // ===================== CRIAÇÃO =====================
         System.out.println("Teste: criação da árvore");
 
         assert arvore.isEmpty();
@@ -16,7 +15,6 @@ public class Teste extends ArvoreBP {
 
         System.out.println("Árvore criada corretamente.\n");
 
-        // ===================== INSERÇÃO =====================
         System.out.println("Teste: inserções");
 
         arvore.insert(50);
@@ -29,13 +27,12 @@ public class Teste extends ArvoreBP {
         arvore.insert(40);
         arvore.insert(60);
         arvore.insert(80);
-        arvore.insert(50); // duplicado
+        arvore.insert(50);
 
         assert arvore.size() == 8;
 
         System.out.println("Inserções funcionando.\n");
 
-        // ===================== NAVEGAÇÃO =====================
         System.out.println("Teste: navegação");
 
         No raiz = arvore.raiz();
@@ -55,7 +52,6 @@ public class Teste extends ArvoreBP {
 
         System.out.println("Navegação ok.\n");
 
-        // ===================== PROFUNDIDADE E ALTURA =====================
         System.out.println("Teste: profundidade e altura");
 
         int profRaiz = arvore.profundidade(raiz);
@@ -72,12 +68,11 @@ public class Teste extends ArvoreBP {
 
         System.out.println("Profundidade e altura ok.\n");
 
-        // ===================== EM ORDEM =====================
         System.out.println("Percurso em ordem:");
         arvore.emOrdem(arvore.raiz());
         System.out.println("\n");
 
-        // ===================== REMOÇÃO =====================
+
         System.out.println("Teste: remoções");
 
         int tamAntes = arvore.size();
@@ -93,7 +88,6 @@ public class Teste extends ArvoreBP {
 
         System.out.println("Remoções funcionando.\n");
 
-        // ===================== ITERADORES =====================
         System.out.println("Teste: iteradores");
 
         Iterator<No> itNos = arvore.nos();
@@ -105,7 +99,7 @@ public class Teste extends ArvoreBP {
         }
         System.out.println();
 
-        Iterator<Object> itEl = arvore.elements();
+        Iterator<Object> itEl = arvore.elementos();
         int c2 = 0;
         System.out.print("Elementos: ");
         while (itEl.hasNext()) {
@@ -118,7 +112,7 @@ public class Teste extends ArvoreBP {
 
         System.out.println("Iteradores ok.\n");
 
-        // ===================== DESENHO =====================
+
         System.out.println("Desenho da árvore:");
         arvore.desenharArvore();
         System.out.println();
