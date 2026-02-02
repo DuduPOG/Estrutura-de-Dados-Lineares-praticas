@@ -1,19 +1,21 @@
+import com.sun.jdi.Value;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-public class HashTable<K, V> {
+public class HashTable {
 
-    private static class Entry<K, V> {
-        K key;
-        V value;
+    private static class Entry {
+        int key;
+        Object value;
 
-        Entry(K key, V value) {
+        Entry(int key, Object value) {
             this.key = key;
             this.value = value;
         }
     }
 
-    private ArrayList<Entry<K, V>>[] table;
+    private ArrayList<Entry>[] table;
     private int capacity;
     private int size;
 
@@ -35,27 +37,30 @@ public class HashTable<K, V> {
         List<K> keys = new ArrayList<>();
 
         for (int i = 0; i < this.capacity; ++i){
-            for (Entry<K, V> entry : table[i]) {
+            for (Entry entry : table[i]) {
                 keys.add(entry.key);
             }
         }
         return keys;
     }
 
-    private int hash(K key) {
+    private int hash(int key) {
         return 0; // implementar
     }
 
-    public void insert(K key, V value) {
+    public void insert(int key, Object value) {
         // implementar
     }
 
-    public V find(K key) {
+    public Object find(int key) {
         return null; // implementar
     }
 
-    public void remove(K key) {
-        // implementar
+    public Object remove(int key) throws NoSuchElementException{
+        if (isEmpty()) {
+            throw new NoSuchElementException("Tabela vazia ou chave inválida");
+        }
+        return this.table[key];
     }
 
     public int size() {
