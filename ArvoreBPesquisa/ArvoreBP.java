@@ -196,6 +196,15 @@ public class ArvoreBP {
         System.out.print(no.getElement() + " ");
     }
 
+    public boolean ehArvoreBP(No no){
+        if (ERaiz(no)){
+            if (no.getFE().getElement() > no.getElement()){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void desenharArvore() {
         int h = altura(this.raiz);
         int largura = (int) Math.pow(2, h + 1) - 1;
